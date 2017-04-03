@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Alice.Pages.MainPage">
+    <StackLayout Orientation="Vertical" 
+               HorizontalOptions="FillAndExpand" 
+               VerticalOptions="FillAndExpand"
+               Spacing="20">
+        <Label Text="Welcome to Firebase Xamarin Forms!"
+         Margin="10,50,10,50"
+           VerticalOptions="Start"
+           HorizontalOptions="Center" />
+        <Image Source="alice" HeightRequest="
+           200" Aspect="AspectFit" ></Image>
+
+        <StackLayout>
+            <StackLayout
+                 HorizontalOptions="Fill" Padding="10">
+                <!--Login-->
+                <Entry Text="{Binding Login}"  />
+                <!--Pass-->
+                <Entry Text="{Binding Password}" />
+
+                <!--LoginButton-->
+                <Grid >
+                    <BoxView HorizontalOptions="FillAndExpand"
+              BackgroundColor="#C7C7C7">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LoginByPassCommand}" />
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+                    <Label
+          VerticalOptions="Center"
+          HorizontalOptions="Center"
+          FontAttributes="Bold"
+          HorizontalTextAlignment="Center" 
+          FontSize="24"
+          TextColor="White" Text="Login">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LoginByPassCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+
+                <Label HorizontalOptions="Center" TextColor="Black" 
+           Text="{Binding ResultText}"></Label>
+            </StackLayout>
+        </StackLayout>
+
+
+    </StackLayout>
+</ContentPage>

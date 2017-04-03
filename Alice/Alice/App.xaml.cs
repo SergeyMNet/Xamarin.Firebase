@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Alice.Pages;
 using Xamarin.Forms;
 
 namespace Alice
@@ -12,8 +12,7 @@ namespace Alice
         public App()
         {
             InitializeComponent();
-
-            MainPage = new Alice.MainPage();
+            MainPage = new ChatPage();
         }
 
         protected override void OnStart()

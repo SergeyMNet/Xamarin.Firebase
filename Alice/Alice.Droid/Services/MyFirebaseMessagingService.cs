@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Alice.Services;
 using Android.App;
 using Android.Content;
 using Android.Media;
@@ -12,6 +12,7 @@ using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using Firebase.Messaging;
+using Xamarin.Forms;
 
 namespace Alice.Droid.Services
 {
@@ -19,10 +20,20 @@ namespace Alice.Droid.Services
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
     class MyFirebaseMessagingService : FirebaseMessagingService
     {
+        // id message, if you remove messages will be replaced by new ones
+        private static int idPush = 1;
+
         public override void OnMessageReceived(RemoteMessage message)
         {
             base.OnMessageReceived(message);
-            SendNotification(message.GetNotification().Body);
+
+            if(message.GetNotification() != null)
+                SendNotification(message.GetNotification().Body);
+
+            if (message.Data["message"] != null)
+                SendNotification(message.Data["message"]);
+
+            
         }
 
         private void SendNotification(string body)
@@ -33,15 +44,20 @@ namespace Alice.Droid.Services
 
             var defaultSoundUri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
             var notificationBuilder = new NotificationCompat.Builder(this)
-                .SetSmallIcon(Resource.Drawable.icon)
-                .SetContentTitle("Title")
-                .SetContentText(body)
-                .SetAutoCancel(true)
-                .SetSound(defaultSoundUri)
+                .SetSmallIcon(Resource.Drawable.icon)   // Display this icon
+                .SetContentTitle("Title")               // Set its title
+                .SetContentText(body)                   // The message to display.
+                .SetAutoCancel(true)                    // Dismiss from the notif. area when clicked
+                .SetSound(defaultSoundUri)              // Sound of message
                 .SetContentIntent(pendingIntent);
 
+            
+
             var notificationManager = NotificationManager.FromContext(this);
-            notificationManager.Notify(0, notificationBuilder.Build());
+            notificationManager.Notify(idPush++, notificationBuilder.Build());
+
+
+            DependencyService.Get<IChatService>().OnMessageReceived(body);
         }
     }
 }
