@@ -8,6 +8,8 @@
             <RowDefinition Height="7*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
+        
+        <!--menu-->
         <StackLayout Grid.Row="0" BackgroundColor="#F6F6F6" 
                      Spacing="10" Padding="10">
             <Button 
@@ -18,6 +20,8 @@
               HorizontalOptions="EndAndExpand"
               Text="+ Add Friend"></Button>
         </StackLayout>
+        
+        <!--chat-->
         <StackLayout Grid.Row="1" BackgroundColor="#F6F6F6">
             <ListView x:Name="ChatList"
                       ItemsSource="{Binding ChatMessages}" 
@@ -27,7 +31,7 @@
                         <ViewCell>
                             <StackLayout BackgroundColor="{Binding IsYourMessage, Converter={StaticResource BoolToColorMessage}}" 
                                          Margin="{Binding IsYourMessage, Converter={StaticResource BoolToPositionMessage}}"
-                                         VerticalOptions="Start" 
+                                         VerticalOptions="End" 
                                          Padding="10">
                                 <Label FontSize="10"
                                        TextColor="Gray"
@@ -39,10 +43,13 @@
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
+        
+        <!--input-->
         <StackLayout Grid.Row="2" Orientation="Vertical" Padding="10" Spacing="5" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <Label HorizontalOptions="StartAndExpand" FontSize="10" TextColor="Gray" Text="Enter your message" />
+                <Label HorizontalOptions="StartAndExpand" VerticalOptions="End"
+                       FontSize="10" TextColor="Gray" Text="Enter your message" />
                 <Button HorizontalOptions="EndAndExpand" 
                     FontSize="12" 
                     BackgroundColor="#E0F9FF" 

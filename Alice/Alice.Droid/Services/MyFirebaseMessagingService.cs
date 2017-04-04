@@ -27,37 +27,51 @@ namespace Alice.Droid.Services
         {
             base.OnMessageReceived(message);
 
-            if(message.GetNotification() != null)
-                SendNotification(message.GetNotification().Body);
+            try
+            {
+                if (message.GetNotification() != null)
+                    SendNotification(message.GetNotification().Body);
 
-            if (message.Data["message"] != null)
-                SendNotification(message.Data["message"]);
-
-            
+                if (message.Data.Count > 0)
+                {
+                    SendNotification(message.Data["message"], message.Data["username"]);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
-        private void SendNotification(string body)
+        private void SendNotification(string body, string name = "admin")
         {
             var intent = new Intent(this, typeof(MainActivity));
-            intent.AddFlags(ActivityFlags.ClearTop);
+            intent.AddFlags(ActivityFlags.ClearTop | ActivityFlags.SingleTop);
             var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
 
             var defaultSoundUri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
             var notificationBuilder = new NotificationCompat.Builder(this)
                 .SetSmallIcon(Resource.Drawable.icon)   // Display this icon
-                .SetContentTitle("Title")               // Set its title
+                .SetContentTitle(name)                  // Set its title
                 .SetContentText(body)                   // The message to display.
                 .SetAutoCancel(true)                    // Dismiss from the notif. area when clicked
                 .SetSound(defaultSoundUri)              // Sound of message
                 .SetContentIntent(pendingIntent);
 
+
+            if (!App.IsActive)
+            {
+                var notificationManager = NotificationManager.FromContext(this);
+                notificationManager.Notify(idPush++, notificationBuilder.Build());
+            }
+            else
+            {
+                var chatService = ViewModelLocator.Instance.Resolve(typeof(ChatService)) as IChatService;
+                chatService.OnMessageReceived(name, body);
+            }
+
             
-
-            var notificationManager = NotificationManager.FromContext(this);
-            notificationManager.Notify(idPush++, notificationBuilder.Build());
-
-
-            DependencyService.Get<IChatService>().OnMessageReceived(body);
         }
     }
 }

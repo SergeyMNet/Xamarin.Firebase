@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Alice.Services;
 using Alice.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -10,12 +11,12 @@ namespace Alice.Pages
     {
         public ChatPage()
         {
+            var viewModel = ViewModelLocator.Instance.Resolve(typeof(ChatVM));
+            this.BindingContext = viewModel;
+            
             InitializeComponent();
-            BindingContext = new ChatVM();
-
-
+            
             Subscribe();
-
         }
 
         private void Subscribe()

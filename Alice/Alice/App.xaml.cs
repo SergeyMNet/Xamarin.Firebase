@@ -9,6 +9,8 @@ namespace Alice
 {
     public partial class App : Application
     {
+        public static bool IsActive = false;
+
         public App()
         {
             InitializeComponent();

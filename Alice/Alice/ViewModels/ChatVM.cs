@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -11,8 +12,37 @@ namespace Alice.ViewModels
 {
     public class ChatVM : BaseVM
     {
-        public IChatService ChatService;
+        public readonly IChatService _chatService;
         public ObservableCollection<ChatMessage> ChatMessages { get; set; } = new ObservableCollection<ChatMessage>();
+
+        public readonly string YouName;
+
+        public ChatVM(IChatService chatService)
+        {
+            _chatService = chatService;
+            
+            //FakeData();
+
+            //FakeName
+            YouName = Guid.NewGuid().ToString();
+
+
+            _chatService.NewMessageReceived += ChatVM_NewMessageReceived;
+        }
+        
+
+        private void FakeData()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                ChatMessages.Add(new ChatMessage()
+                {
+                    IsYourMessage = (i % 2 == 0),
+                    Text = "some mesage " + i,
+                    UserName = (i % 2 == 0) ? "Admin" : "some friend"
+                });
+            }
+        }
 
 
         private string _newMessageText;
@@ -31,44 +61,30 @@ namespace Alice.ViewModels
             {
                 IsYourMessage = true,
                 Text = NewMessageText,
-                UserName = "Admin"
+                UserName = YouName
             });
+            
+            MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
+            _chatService.SendMessage(YouName, NewMessageText);
 
             NewMessageText = "";
-
-            MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
         }
-
-        public ChatVM()
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                ChatMessages.Add(new ChatMessage()
-                {
-                    IsYourMessage = (i%2 == 0),
-                    Text = "some mesage " + i,
-                    UserName = (i % 2 == 0) ? "Admin" : "some friend"
-                });
-            }
-
-            ChatService = DependencyService.Get<IChatService>();
-            ChatService.NewMessageReceived += ChatVM_NewMessageReceived;
-
-        }
-
+        
         private void ChatVM_NewMessageReceived(object sender, System.EventArgs e)
         {
             var body = e as BodyEventArgs;
-
             System.Diagnostics.Debug.WriteLine("---> new message = " + body.Text);
 
-            ChatMessages.Add(new ChatMessage()
+            if (YouName != body.Name)
             {
-                Text = body.Text,
-                UserName = "someone"
-            });
+                ChatMessages.Add(new ChatMessage()
+                {
+                    Text = body.Text,
+                    UserName = body.Name
+                });
 
-            MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
+                MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
+            }
         }
     }
 }
