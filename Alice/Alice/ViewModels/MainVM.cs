@@ -51,7 +51,7 @@ namespace Alice.ViewModels
             {
                 var result = await _firebaseAuth.LoginAsync(Login, Password);
                 ResultText = result.ToString();
-                if(result)
+                if(result != "")
                     App.Current.MainPage = new ChatPage();
             }
             catch (Exception ex)

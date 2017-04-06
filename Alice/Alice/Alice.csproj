@@ -38,13 +38,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SessionCell.cs" />
     <Compile Include="Converters\BoolToColorMessage.cs" />
     <Compile Include="Converters\BoolToPositionMessage.cs" />
     <Compile Include="DataServices\IRequestProvider.cs" />
     <Compile Include="DataServices\RequestProvider.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Models\ChatMessage.cs" />
     <Compile Include="Models\FirebaseModels\MessageModel.cs" />
     <Compile Include="Pages\ChatPage.xaml.cs">
@@ -63,10 +61,6 @@
     <Compile Include="ViewModels\MainVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MainPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>

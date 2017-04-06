@@ -7,7 +7,8 @@ namespace Alice.Services
     /// </summary>
     public interface IFirebaseAuth
     {
-        Task<bool> LoginAsync(string email, string pwd);
+        void Logout();
+        Task<string> LoginAsync(string email, string pwd);
         Task<bool> CreateUserAsync(string email, string pwd);
     }
 }

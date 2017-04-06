@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+
+  <!-- UI Strings -->
+  <string name="SignIn">Sign In</string>
+  <string name="SignOut">Sign Out</string>
+  <string name="RevokeAccess">Revoke Access</string>
+  <string name="SubscribeToNews">Subscribe To News</string>
+  <string name="LogToken">Log Token</string>
+
+</resources>

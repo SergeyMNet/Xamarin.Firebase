@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Alice.Models;
+using Alice.Pages;
 using Alice.Services;
 using Xamarin.Forms;
 
@@ -13,6 +14,8 @@ namespace Alice.ViewModels
     public class ChatVM : BaseVM
     {
         public readonly IChatService _chatService;
+        public readonly IFirebaseAuth _firebaseAuth;
+
         public ObservableCollection<ChatMessage> ChatMessages { get; set; } = new ObservableCollection<ChatMessage>();
 
         public readonly string YouName;
@@ -20,8 +23,9 @@ namespace Alice.ViewModels
         public ChatVM(IChatService chatService)
         {
             _chatService = chatService;
-            
-            //FakeData();
+            _firebaseAuth = DependencyService.Get<IFirebaseAuth>();
+
+            FakeData();
 
             //FakeName
             YouName = Guid.NewGuid().ToString();
@@ -33,6 +37,13 @@ namespace Alice.ViewModels
 
         private void FakeData()
         {
+            ChatMessages.Add(new ChatMessage()
+            {
+                IsYourMessage = true,
+                Text = "some mesage  asdasdasd asdklj lj jiopjop jopj opjo pj ioph ioh uiohuio hioio",
+                UserName = "Admin"
+            });
+
             for (int i = 0; i < 5; i++)
             {
                 ChatMessages.Add(new ChatMessage()
@@ -52,6 +63,14 @@ namespace Alice.ViewModels
             set { _newMessageText = value; OnPropertyChanged(); }
         }
 
+
+        public ICommand LogoutCommand => new Command(Logout);
+
+        private void Logout()
+        {
+            _firebaseAuth.Logout();
+            App.Current.MainPage = new MainPage();
+        }
 
         public ICommand AddMessageCommand => new Command(AddMessage);
 

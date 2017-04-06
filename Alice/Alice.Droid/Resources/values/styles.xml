@@ -2,6 +2,11 @@
 <resources>
 
   <style name="MainTheme" parent="MainTheme.Base">
+    <item name="android:windowBackground">@drawable/splash_background</item>
+    <!-- colorPrimary is used for the default action bar background -->
+    <item name="colorPrimary">#ffffff</item>
+    <!-- colorPrimaryDark is used for the status bar -->
+    <item name="colorPrimaryDark">#ffffff</item>
   </style>
   <!-- Base theme applied no matter what API -->
   <style name="MainTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">

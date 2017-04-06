@@ -1,64 +1,78 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Alice.Controls;assembly=Alice"
              x:Class="Alice.Pages.ChatPage">
     <Grid BackgroundColor="#DADADA">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="7*" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         
         <!--menu-->
         <StackLayout Grid.Row="0" BackgroundColor="#F6F6F6" 
+                     Orientation="Horizontal" HorizontalOptions="FillAndExpand"
                      Spacing="10" Padding="10">
-            <Button 
-              WidthRequest="100"
-              BackgroundColor="#E0F9FF"
-              TextColor="Black"
-              VerticalOptions="CenterAndExpand"
-              HorizontalOptions="EndAndExpand"
-              Text="+ Add Friend"></Button>
+            <StackLayout.Margin>
+                <OnPlatform x:TypeArguments="Thickness"
+                            Android="0" iOS="0,10,0,0"/>
+            </StackLayout.Margin>
+           
+            <Image Source="logout" Aspect="AspectFit" HeightRequest="30"
+                   VerticalOptions="Center" HorizontalOptions="EndAndExpand" >
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding LogoutCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
         </StackLayout>
         
         <!--chat-->
-        <StackLayout Grid.Row="1" BackgroundColor="#F6F6F6">
-            <ListView x:Name="ChatList"
+        <StackLayout Grid.Row="1" BackgroundColor="#F6F6F6" VerticalOptions="FillAndExpand">
+            <ListView x:Name="ChatList" VerticalOptions="FillAndExpand"
                       ItemsSource="{Binding ChatMessages}" 
                       HasUnevenRows="True" SeparatorVisibility="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <controls:SessionCell>
                             <StackLayout BackgroundColor="{Binding IsYourMessage, Converter={StaticResource BoolToColorMessage}}" 
                                          Margin="{Binding IsYourMessage, Converter={StaticResource BoolToPositionMessage}}"
-                                         VerticalOptions="End" 
+                                         VerticalOptions="FillAndExpand" HeightRequest="50"
                                          Padding="10">
                                 <Label FontSize="10"
                                        TextColor="Gray"
                                        Text="{Binding UserName}"></Label>
                                 <Label Text="{Binding Text}"></Label>
                             </StackLayout>
-                        </ViewCell>
+                        </controls:SessionCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
         
         <!--input-->
-        <StackLayout Grid.Row="2" Orientation="Vertical" Padding="10" Spacing="5" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <Label HorizontalOptions="StartAndExpand" VerticalOptions="End"
+        <Grid Grid.Row="2" Padding="20"  BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="9*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" 
+                   HorizontalOptions="StartAndExpand" VerticalOptions="End"
                        FontSize="10" TextColor="Gray" Text="Enter your message" />
-                <Button HorizontalOptions="EndAndExpand" 
-                    FontSize="12" 
-                    BackgroundColor="#E0F9FF" 
-                    TextColor="Black" 
-                    Command="{Binding AddMessageCommand}"
-                    Text="Send"></Button>
-            </StackLayout>
-            <Editor BackgroundColor="#F6F6F6" FontSize="12" VerticalOptions="FillAndExpand"
-                   Text="{Binding NewMessageText}"></Editor>
-        </StackLayout>
+            <Entry Grid.Row="1" Grid.Column="0" 
+                   BackgroundColor="#F6F6F6" FontSize="12" VerticalOptions="FillAndExpand"
+                   Text="{Binding NewMessageText}"></Entry>
+
+            <Image Grid.Row="1" Grid.Column="1"
+                   Source="send" Aspect="AspectFit" WidthRequest="30" VerticalOptions="Center">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddMessageCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
+        </Grid>
     </Grid>
 </ContentPage>

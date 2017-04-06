@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <Button
+      android:id="@+id/btnSignIn"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/SignIn" />
+  <Button
+      android:text="@string/SignOut"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/btnSignOut" />
+  <Button
+      android:text="@string/RevokeAccess"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/btnRevokeAccess" />
+  <TextView
+      android:text="Status"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/textViewStatus" />
+  <TextView
+      android:text="Details"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/textViewDetail" />
+</LinearLayout>
