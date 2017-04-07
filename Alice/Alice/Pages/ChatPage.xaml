@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Alice.Controls;assembly=Alice"
              x:Class="Alice.Pages.ChatPage">
+    <ScrollView VerticalOptions="FillAndExpand">
     <Grid BackgroundColor="#DADADA">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -18,7 +19,9 @@
                 <OnPlatform x:TypeArguments="Thickness"
                             Android="0" iOS="0,10,0,0"/>
             </StackLayout.Margin>
-           
+
+            <Image Source="{Binding UserCurent.UrlPhoto}" Aspect="AspectFit" HeightRequest="30" />
+            <Label  Text="{Binding UserCurent.Name}" FontSize="12" TextColor="Gray" VerticalOptions="Center" />
             <Image Source="logout" Aspect="AspectFit" HeightRequest="30"
                    VerticalOptions="Center" HorizontalOptions="EndAndExpand" >
                 <Image.GestureRecognizers>
@@ -35,6 +38,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <controls:SessionCell>
+                            
                             <StackLayout BackgroundColor="{Binding IsYourMessage, Converter={StaticResource BoolToColorMessage}}" 
                                          Margin="{Binding IsYourMessage, Converter={StaticResource BoolToPositionMessage}}"
                                          VerticalOptions="FillAndExpand" HeightRequest="50"
@@ -64,8 +68,12 @@
                    HorizontalOptions="StartAndExpand" VerticalOptions="End"
                        FontSize="10" TextColor="Gray" Text="Enter your message" />
             <Entry Grid.Row="1" Grid.Column="0" 
-                   BackgroundColor="#F6F6F6" FontSize="12" VerticalOptions="FillAndExpand"
-                   Text="{Binding NewMessageText}"></Entry>
+                   FontSize="12" VerticalOptions="FillAndExpand"
+                   Text="{Binding NewMessageText}">
+                <Entry.BackgroundColor>
+                    <OnPlatform x:TypeArguments="Color" Android="White" iOS="#F6F6F6" />
+                </Entry.BackgroundColor>
+            </Entry>
 
             <Image Grid.Row="1" Grid.Column="1"
                    Source="send" Aspect="AspectFit" WidthRequest="30" VerticalOptions="Center">
@@ -75,4 +83,5 @@
             </Image>
         </Grid>
     </Grid>
+    </ScrollView>
 </ContentPage>

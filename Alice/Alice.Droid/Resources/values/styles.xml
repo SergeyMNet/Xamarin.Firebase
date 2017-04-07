@@ -6,7 +6,7 @@
     <!-- colorPrimary is used for the default action bar background -->
     <item name="colorPrimary">#ffffff</item>
     <!-- colorPrimaryDark is used for the status bar -->
-    <item name="colorPrimaryDark">#ffffff</item>
+    <item name="colorPrimaryDark">#DADADA</item>
   </style>
   <!-- Base theme applied no matter what API -->
   <style name="MainTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">

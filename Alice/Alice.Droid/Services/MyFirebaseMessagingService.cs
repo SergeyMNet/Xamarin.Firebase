@@ -34,7 +34,7 @@ namespace Alice.Droid.Services
 
                 if (message.Data.Count > 0)
                 {
-                    SendNotification(message.Data["message"], message.Data["username"]);
+                    SendNotification(message.Data["message"], message.Data["username"], message.Data["photo"]);
                 }
             }
             catch (Exception e)
@@ -44,7 +44,7 @@ namespace Alice.Droid.Services
             }
         }
 
-        private void SendNotification(string body, string name = "admin")
+        private void SendNotification(string body, string name = "admin", string photo = "")
         {
             var intent = new Intent(this, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop | ActivityFlags.SingleTop);
@@ -68,7 +68,7 @@ namespace Alice.Droid.Services
             else
             {
                 var chatService = ViewModelLocator.Instance.Resolve(typeof(ChatService)) as IChatService;
-                chatService.OnMessageReceived(name, body);
+                chatService.OnMessageReceived(name, body, photo);
             }
 
             

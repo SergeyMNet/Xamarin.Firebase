@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using Alice.Facebook.Pages;
 using Alice.Pages;
 using Alice.Services;
 using Xamarin.Forms;
@@ -43,6 +44,12 @@ namespace Alice.ViewModels
 
 
         public ICommand LoginByPassCommand => new Command(LoginByPassword);
+        public ICommand OpenFacebookCommand => new Command(OpenFacebook);
+
+        private void OpenFacebook()
+        {
+            App.Current.MainPage.Navigation.PushModalAsync(new FacebookProfileCsPage());
+        }
 
 
         private async void LoginByPassword()
@@ -50,13 +57,12 @@ namespace Alice.ViewModels
             try
             {
                 var result = await _firebaseAuth.LoginAsync(Login, Password);
-                ResultText = result.ToString();
+                ResultText = result;
                 if(result != "")
                     App.Current.MainPage = new ChatPage();
             }
             catch (Exception ex)
             {
-
                 System.Diagnostics.Debug.WriteLine("---> " + ex.Message);
                 ResultText = ex.Message;
             }

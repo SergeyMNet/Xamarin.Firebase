@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Alice.Models;
 using Alice.Pages;
 using Xamarin.Forms;
 
@@ -10,11 +11,11 @@ namespace Alice
     public partial class App : Application
     {
         public static bool IsActive = true;
-
+        
         public App()
         {
             InitializeComponent();
-            MainPage = new ChatPage();
+            MainPage = new MainPage();
         }
 
         protected override void OnStart()

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<component format="1" id="firebase-auth" is-shell="true">
+  <name>Firebase - Auth</name>
+  <publisher>Xamarin Inc.</publisher>
+  <publisher-url>http://xamarin.com</publisher-url>
+  <version>42.1001.0.0</version>
+  <summary>Easily support authentication in your app using passwords, or popular federated identity providers like Google, Facebook, and more.</summary>
+  <packages>
+    <package id="Xamarin.Firebase.Auth" version="42.1001.0" framework="android" />
+  </packages>
+  <samples>
+    <sample id="FirebaseAuthQuickstart">
+      <name>Firebase Auth Quickstart</name>
+      <summary>Firebase Auth Quickstart</summary>
+    </sample>
+  </samples>
+</component>

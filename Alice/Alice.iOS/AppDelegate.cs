@@ -96,13 +96,13 @@ namespace Alice.iOS
         {
             // Use this method to release shared resources, save user data, invalidate timers and store the application state.
             // If your application supports background exection this method is called instead of WillTerminate when the user quits.
-            Messaging.SharedInstance.Disconnect();
+            //Messaging.SharedInstance.Disconnect();
             System.Diagnostics.Debug.WriteLine("Disconnected from FCM");
         }
 
         public override void WillEnterForeground(UIApplication application)
         {
-            ConnectToFCM(Window.RootViewController);
+            //ConnectToFCM(Window.RootViewController);
         }
 
         // To receive notifications in foregroung on iOS 9 and below.
@@ -162,9 +162,10 @@ namespace Alice.iOS
 
             var name = remoteMessage.AppData["username"];
             var body = remoteMessage.AppData["message"];
+            var photo = remoteMessage.AppData["photo"];
 
             var chatService = ViewModelLocator.Instance.Resolve(typeof(ChatService)) as IChatService;
-            chatService.OnMessageReceived(name.ToString(), body.ToString());
+            chatService.OnMessageReceived(name.ToString(), body.ToString(), photo.ToString());
         }
 
         //////////////////
@@ -271,5 +272,10 @@ namespace Alice.iOS
             var alert = new UIAlertView(title ?? "Title", message ?? "Message", null, "Cancel", "OK");
             alert.Show();
         }
+    }
+
+    public class UserInfoEventArgs : EventArgs
+    {
+        public NSDictionary UserInfo { get; set; }
     }
 }

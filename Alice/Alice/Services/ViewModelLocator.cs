@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Alice.DataServices;
+using Alice.Facebook.ViewModels;
+using Alice.ViewModels;
 using Microsoft.Practices.Unity;
 
 namespace Alice.Services
@@ -31,12 +33,15 @@ namespace Alice.Services
 
             // services
             _unityContainer.RegisterType<IChatService, ChatService>(new ContainerControlledLifetimeManager());
-            
+
             // data services
             // ---
 
             // view models
-            // ---
+            _unityContainer.RegisterType<MainVM>();
+            _unityContainer.RegisterType<ChatVM>();
+            _unityContainer.RegisterType<FacebookViewModel>();
+
         }
 
         public T Resolve<T>()

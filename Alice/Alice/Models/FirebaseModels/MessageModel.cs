@@ -15,9 +15,9 @@ namespace Alice.Models.FirebaseModels
         [JsonProperty("data")]
         public DataModel Data { get; set; }
 
-        public MessageModel(string name, string text)
+        public MessageModel(string name, string text, string photo)
         {
-            Data = new DataModel() {UserName = name, Message = text};
+            Data = new DataModel() {UserName = name, Message = text, UrlPhoto = photo};
         }
     }
 
@@ -28,5 +28,8 @@ namespace Alice.Models.FirebaseModels
 
         [JsonProperty("message")]
         public string Message { get; set; }
+
+        [JsonProperty("photo")]
+        public string UrlPhoto { get; set; }
     }
 }

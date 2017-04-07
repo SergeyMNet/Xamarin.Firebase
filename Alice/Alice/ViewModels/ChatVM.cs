@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Alice.Models;
 using Alice.Pages;
@@ -17,23 +18,40 @@ namespace Alice.ViewModels
         public readonly IFirebaseAuth _firebaseAuth;
 
         public ObservableCollection<ChatMessage> ChatMessages { get; set; } = new ObservableCollection<ChatMessage>();
+        
 
-        public readonly string YouName;
+        private UserModel _user = new UserModel();
+        public UserModel UserCurent
+        {
+            get { return _user; }
+            set { _user = value; OnPropertyChanged();
+            }
+        }
+
+
 
         public ChatVM(IChatService chatService)
         {
             _chatService = chatService;
             _firebaseAuth = DependencyService.Get<IFirebaseAuth>();
 
-            FakeData();
-
-            //FakeName
-            YouName = Guid.NewGuid().ToString();
-
-
+            //FakeData();
+            
             _chatService.NewMessageReceived += ChatVM_NewMessageReceived;
+
+            GetUser();
         }
-        
+
+
+        private async Task GetUser()
+        {
+            await Task.Delay(1000);
+
+            Device.BeginInvokeOnMainThread(()=> {
+                UserCurent = _firebaseAuth.GetUser();
+                OnPropertyChanged("UserCurent");
+            });
+        }
 
         private void FakeData()
         {
@@ -80,11 +98,11 @@ namespace Alice.ViewModels
             {
                 IsYourMessage = true,
                 Text = NewMessageText,
-                UserName = YouName
+                UserName = UserCurent.Name
             });
             
             MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
-            _chatService.SendMessage(YouName, NewMessageText);
+            _chatService.SendMessage(UserCurent.Name, NewMessageText, UserCurent.UrlPhoto);
 
             NewMessageText = "";
         }
@@ -94,7 +112,7 @@ namespace Alice.ViewModels
             var body = e as BodyEventArgs;
             System.Diagnostics.Debug.WriteLine("---> new message = " + body.Text);
 
-            if (YouName != body.Name)
+            if (UserCurent.Name != body.Name)
             {
                 ChatMessages.Add(new ChatMessage()
                 {

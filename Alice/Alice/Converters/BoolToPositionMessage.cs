@@ -14,9 +14,9 @@ namespace Alice.Converters
         {
             if (value is bool)
                 if ((bool) value)
-                    return new Thickness(30, 10, 10, 10);
+                    return new Thickness(50, 10, 10, 10);
 
-            return new Thickness(10, 10, 30, 10);
+            return new Thickness(10, 10, 50, 10);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

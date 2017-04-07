@@ -3,51 +3,97 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              BackgroundColor="White"
              x:Class="Alice.Pages.MainPage">
-    <StackLayout Orientation="Vertical" 
-               HorizontalOptions="FillAndExpand" 
-               VerticalOptions="FillAndExpand"
-               Spacing="20">
+    <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+        
+        
+    <StackLayout Grid.Row="0" Orientation="Vertical" 
+                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                 Spacing="30">
         <Label Text="Welcome to Firebase Xamarin Forms!"
-         Margin="10,50,10,50"
-           VerticalOptions="Start"
-           HorizontalOptions="Center" />
-        <Image Source="alice" HeightRequest="
-           200" Aspect="AspectFit" ></Image>
-
-        <StackLayout>
-            <StackLayout
-                 HorizontalOptions="Fill" Padding="10">
-                <!--Login-->
-                <Entry Text="{Binding Login}"  />
-                <!--Pass-->
-                <Entry Text="{Binding Password}" />
-
-                <!--LoginButton-->
-                <Grid >
-                    <BoxView HorizontalOptions="FillAndExpand"
-              BackgroundColor="#C7C7C7">
-                        <BoxView.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding LoginByPassCommand}" />
-                        </BoxView.GestureRecognizers>
-                    </BoxView>
-                    <Label
-          VerticalOptions="Center"
-          HorizontalOptions="Center"
-          FontAttributes="Bold"
-          HorizontalTextAlignment="Center" 
-          FontSize="24"
-          TextColor="White" Text="Login">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding LoginByPassCommand}" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Grid>
-
-                <Label HorizontalOptions="Center" TextColor="Black" 
-           Text="{Binding ResultText}"></Label>
-            </StackLayout>
-        </StackLayout>
-
-
+                Margin="10,50,10,50"
+                VerticalOptions="Start"
+                HorizontalOptions="Center" />
+        <Image Source="alice" HeightRequest="200" Aspect="AspectFit" />
     </StackLayout>
+
+    <StackLayout Grid.Row="1" Orientation="Vertical" 
+                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                 Spacing="30" Margin="20" BackgroundColor="White">
+            
+        <StackLayout HorizontalOptions="Fill" Padding="10">
+            <Button TextColor="White" BackgroundColor="#01579B"
+                    Command="{Binding OpenFacebookCommand}"
+                    Text="Login with Facebook" />
+            <Label Text=" - or - " HorizontalTextAlignment="Center" HorizontalOptions="Center"/>
+            
+            <!--Login-->
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+                <Image Source="user" HeightRequest="30" />
+                <Entry Text="{Binding Login}" HorizontalOptions="FillAndExpand" />
+            </StackLayout>
+            <!--Pass-->
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Image Source="pass" HeightRequest="30" />
+                <Entry Text="{Binding Password}" HorizontalOptions="FillAndExpand" />
+            </StackLayout>
+
+            <!--LoginButton-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Column="1" Margin="10" >
+                <BoxView HorizontalOptions="FillAndExpand"
+                        BackgroundColor="#02a9f5">
+                    <BoxView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoginByPassCommand}" />
+                    </BoxView.GestureRecognizers>
+                </BoxView>
+                <Label VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center" 
+                    FontSize="24"
+                    TextColor="White" Text="Login">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoginByPassCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+
+
+            <Grid Grid.Column="0" Margin="10" >
+                <BoxView HorizontalOptions="FillAndExpand"
+                        BackgroundColor="White">
+                    <BoxView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding }" />
+                    </BoxView.GestureRecognizers>
+                </BoxView>
+                <Label VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center" 
+                    FontSize="20"
+                    TextColor="#02a9f5" Text="Sing Up">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding }" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+
+            </Grid>
+
+            <Label HorizontalOptions="Center" TextColor="Black" 
+                    Text="{Binding ResultText}" />
+        </StackLayout>
+        </StackLayout>
+        </Grid>
+    </ScrollView>
 </ContentPage>

@@ -13,17 +13,17 @@ namespace Alice.Services
         }
 
         public event EventHandler NewMessageReceived;
-        public void OnMessageReceived(string name, string text)
+        public void OnMessageReceived(string name, string text, string photo = "")
         {
             EventHandler eh = NewMessageReceived;
             if (eh != null)
-                eh(this, new BodyEventArgs(name, text));
+                eh(this, new BodyEventArgs(name, text, photo));
         }
 
-        public void SendMessage(string name, string text)
+        public void SendMessage(string name, string text, string photo)
         {
             string url = "https://fcm.googleapis.com/fcm/send";
-            MessageModel model = new MessageModel(name, text);
+            MessageModel model = new MessageModel(name, text, photo);
             _requestProvider.PostAsync(url, model);
         }
         
@@ -34,11 +34,13 @@ namespace Alice.Services
     {
         public string Name { get; set; }
         public string Text { get; set; }
+        public string UrlPhoto { get; set; }
 
-        public BodyEventArgs(string name, string text)
+        public BodyEventArgs(string name, string text, string photo)
         {
             Name = name;
             Text = text;
+            UrlPhoto = photo;
         }
     }
 }

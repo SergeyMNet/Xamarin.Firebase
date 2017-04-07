@@ -43,8 +43,14 @@
     <Compile Include="Converters\BoolToPositionMessage.cs" />
     <Compile Include="DataServices\IRequestProvider.cs" />
     <Compile Include="DataServices\RequestProvider.cs" />
+    <Compile Include="Facebook\Models\FacebookProfile.cs" />
+    <Compile Include="Facebook\Pages\FacebookProfileCsPage.cs" />
+    <Compile Include="Facebook\Pages\MainCsPage.cs" />
+    <Compile Include="Facebook\Services\FacebookServices.cs" />
+    <Compile Include="Facebook\ViewModels\FacebookViewModel.cs" />
     <Compile Include="Models\ChatMessage.cs" />
     <Compile Include="Models\FirebaseModels\MessageModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Pages\ChatPage.xaml.cs">
       <DependentUpon>ChatPage.xaml</DependentUpon>
     </Compile>

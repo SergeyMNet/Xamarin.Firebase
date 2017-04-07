@@ -9,10 +9,9 @@ namespace Alice.Services
     public interface IChatService
     {
         event EventHandler NewMessageReceived;
-        void OnMessageReceived(string name, string text);
-
-
-        void SendMessage(string name, string text);
+        void OnMessageReceived(string name, string text, string photo);
+        
+        void SendMessage(string name, string text, string photo);
     }
 
 
