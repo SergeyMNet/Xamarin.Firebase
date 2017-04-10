@@ -17,7 +17,25 @@ namespace Alice.Pages
             InitializeComponent();
             
             Subscribe();
+
+            if (Device.OS == TargetPlatform.iOS)
+            {
+                EntryChat.Focused += EntryChat_Focused;
+                EntryChat.Unfocused += EntryChat_Completed;
+            }
         }
+
+
+        private void EntryChat_Completed(object sender, System.EventArgs e)
+        {
+            InputGrid.TranslateTo(0, 0, 250, Easing.Linear);
+        }
+
+        private void EntryChat_Focused(object sender, FocusEventArgs e)
+        {
+            InputGrid.TranslateTo(0, -300, 250, Easing.Linear);
+        }
+
 
         private void Subscribe()
         {

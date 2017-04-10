@@ -186,7 +186,7 @@ namespace Alice.iOS.Services
                 name = user.Email;
             }
 
-            if (!string.IsNullOrEmpty(user.PhotoUrl.ToString()))
+            if (user.PhotoUrl != null)
             {
                 url = user.PhotoUrl.ToString();
             }

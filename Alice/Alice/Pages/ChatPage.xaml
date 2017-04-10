@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Alice.Controls;assembly=Alice"
              x:Class="Alice.Pages.ChatPage">
-    <ScrollView VerticalOptions="FillAndExpand">
     <Grid BackgroundColor="#DADADA">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -55,7 +54,7 @@
         </StackLayout>
         
         <!--input-->
-        <Grid Grid.Row="2" Padding="20"  BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Grid x:Name="InputGrid" Grid.Row="2" Padding="20"  BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -67,7 +66,7 @@
             <Label Grid.Row="0" Grid.Column="0" 
                    HorizontalOptions="StartAndExpand" VerticalOptions="End"
                        FontSize="10" TextColor="Gray" Text="Enter your message" />
-            <Entry Grid.Row="1" Grid.Column="0" 
+            <Entry x:Name="EntryChat" Grid.Row="1" Grid.Column="0" 
                    FontSize="12" VerticalOptions="FillAndExpand"
                    Text="{Binding NewMessageText}">
                 <Entry.BackgroundColor>
@@ -83,5 +82,4 @@
             </Image>
         </Grid>
     </Grid>
-    </ScrollView>
 </ContentPage>

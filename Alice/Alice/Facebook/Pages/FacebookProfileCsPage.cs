@@ -39,7 +39,26 @@ namespace Alice.Facebook.Pages
 
             webView.Navigated += WebViewOnNavigated;
 
-            Content = webView;
+            var grigMain = new Grid();
+            var imgClose = new Image();
+            imgClose.Source = "close";
+            imgClose.HeightRequest = 50;
+            imgClose.HorizontalOptions = LayoutOptions.EndAndExpand;
+            imgClose.VerticalOptions = LayoutOptions.StartAndExpand;
+            imgClose.Margin = new Thickness(0, 30, 20, 0);
+            var tap = new TapGestureRecognizer();
+            tap.Tapped += FacebookProfileCsPage_Tapped;
+            imgClose.GestureRecognizers.Add(tap);
+
+            grigMain.Children.Add(webView);
+            grigMain.Children.Add(imgClose);
+            
+            Content = grigMain;
+        }
+
+        private async void FacebookProfileCsPage_Tapped(object sender, System.EventArgs e)
+        {
+            await App.Current.MainPage.Navigation.PopModalAsync();
         }
 
         private async void WebViewOnNavigated(object sender, WebNavigatedEventArgs e)

@@ -20,11 +20,11 @@ namespace Alice.iOS
         public event EventHandler<UserInfoEventArgs> NotificationReceived;
 
         // class-level declarations
-        public override UIWindow Window
-        {
-            get;
-            set;
-        }
+        //public override UIWindow Window
+        //{
+        //    get;
+        //    set;
+        //}
 
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
@@ -96,13 +96,13 @@ namespace Alice.iOS
         {
             // Use this method to release shared resources, save user data, invalidate timers and store the application state.
             // If your application supports background exection this method is called instead of WillTerminate when the user quits.
-            //Messaging.SharedInstance.Disconnect();
+            Messaging.SharedInstance.Disconnect();
             System.Diagnostics.Debug.WriteLine("Disconnected from FCM");
         }
 
         public override void WillEnterForeground(UIApplication application)
         {
-            //ConnectToFCM(Window.RootViewController);
+            ConnectToFCM(this.Window.RootViewController);
         }
 
         // To receive notifications in foregroung on iOS 9 and below.
@@ -237,9 +237,12 @@ namespace Alice.iOS
                 }
                 else
                 {
-                //ShowMessage("Success!", "Connected to FCM");
-                System.Diagnostics.Debug.WriteLine("Success! Connected to FCM");
+                    //ShowMessage("Success!", "Connected to FCM");
+                    System.Diagnostics.Debug.WriteLine("Success! Connected to FCM");
                     System.Diagnostics.Debug.WriteLine($"Token: {InstanceId.SharedInstance.Token}");
+
+                    //TODO: Change Topic to what is required
+                    Messaging.SharedInstance.Subscribe("/topics/chat");
                 }
             });
         }
