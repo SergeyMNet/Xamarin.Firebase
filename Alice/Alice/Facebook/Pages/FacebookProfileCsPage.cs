@@ -15,6 +15,10 @@ namespace Alice.Facebook.Pages
         /// </summary>
         private string ClientId = "175293032980376";
 
+
+        /// <summary>
+        /// From firebase console
+        /// </summary>
         private string _redirectUri = "https://alice-1d9df.firebaseapp.com/__/auth/handler"; 
 
         public FacebookProfileCsPage()
@@ -63,9 +67,7 @@ namespace Alice.Facebook.Pages
 
         private async void WebViewOnNavigated(object sender, WebNavigatedEventArgs e)
         {
-
             var accessToken = ExtractAccessTokenFromUrl(e.Url);
-
 
             System.Diagnostics.Debug.WriteLine("---> accessToken = " + accessToken);
 

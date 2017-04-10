@@ -5,15 +5,13 @@ using Alice.Services;
 using Firebase.CloudMessaging;
 using Firebase.InstanceID;
 using Foundation;
+using Microsoft.Practices.ObjectBuilder2;
 using UIKit;
 using UserNotifications;
 
 
 namespace Alice.iOS
 {
-    // The UIApplicationDelegate for the application. This class is responsible for launching the 
-    // User Interface of the application, as well as listening (and optionally responding) to 
-    // application events from iOS.
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate, IUNUserNotificationCenterDelegate, IMessagingDelegate
     {
@@ -26,13 +24,7 @@ namespace Alice.iOS
         //    set;
         //}
 
-        //
-        // This method is invoked when the application has loaded and is ready to run. In this 
-        // method you should instantiate the window, load the UI into it and then make the window
-        // visible.
-        //
-        // You have 17 seconds to return from this method, or iOS will terminate your application.
-        //
+        
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
@@ -66,7 +58,6 @@ namespace Alice.iOS
             }
 
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
-
             Firebase.Analytics.App.Configure();
 
             try
@@ -82,15 +73,7 @@ namespace Alice.iOS
 
             return base.FinishedLaunching(app, options);
         }
-
-
-
-
-
-
-
-
-
+        
 
         public override void DidEnterBackground(UIApplication application)
         {
@@ -116,7 +99,6 @@ namespace Alice.iOS
             // This lets FCM track message delivery and analytics, which is performed
             // automatically with method swizzling enabled.
             //Messaging.GetInstance ().AppDidReceiveMessage (userInfo);
-
             if (NotificationReceived == null)
                 return;
 
@@ -130,7 +112,8 @@ namespace Alice.iOS
                 var alert_d = aps_d["alert"] as NSDictionary;
                 var body = alert_d["body"] as NSString;
                 var title = alert_d["title"] as NSString;
-                debugAlert(title, body);
+
+                System.Diagnostics.Debug.WriteLine($"---> push title={title}, body{body}");
             }
         }
 
@@ -150,9 +133,10 @@ namespace Alice.iOS
             var e = new UserInfoEventArgs { UserInfo = notification.Request.Content.UserInfo };
             NotificationReceived(this, e);
 
-                        var title = notification.Request.Content.Title;
-                        var body = notification.Request.Content.Body;
-                        debugAlert(title, body);
+            var title = notification.Request.Content.Title;
+            var body = notification.Request.Content.Body;
+            
+            System.Diagnostics.Debug.WriteLine($"---> push title={title}, body{body}" );
         }
 
         // Receive data message on iOS 10 devices.
@@ -168,10 +152,8 @@ namespace Alice.iOS
             chatService.OnMessageReceived(name.ToString(), body.ToString(), photo.ToString());
         }
 
-        //////////////////
-        ////////////////// WORKAROUND
-        //////////////////
-
+        
+        /// WORKAROUND
         #region Workaround for handling notifications in background for iOS 10
 
         [Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
@@ -182,17 +164,14 @@ namespace Alice.iOS
 
             var e = new UserInfoEventArgs { UserInfo = response.Notification.Request.Content.UserInfo };
             NotificationReceived(this, e);
-
-
+            
             System.Diagnostics.Debug.WriteLine("--->get message " + response.Notification.Date);
         }
 
         #endregion
+        /// END OF WORKAROUND
+        
 
-        //////////////////
-        ////////////////// END OF WORKAROUND
-        //////////////////
-        /// 
         void TokenRefreshNotification(object sender, NSNotificationEventArgs e)
         {
             // This method will be fired everytime a new token is generated, including the first
@@ -211,13 +190,11 @@ namespace Alice.iOS
             {
                 if (error != null)
                 {
-                    ShowMessage("Unable to connect to FCM", error.LocalizedDescription, fromViewController);
-
-                    
+                    System.Diagnostics.Debug.WriteLine("---> Unable to connect to FCM: " + error.LocalizedDescription);
                 }
                 else
                 {
-                    ShowMessage("Success!", "Connected to FCM", fromViewController);
+                    System.Diagnostics.Debug.WriteLine("--->  Success! Connected to FCM");
                     System.Diagnostics.Debug.WriteLine($"Token: {InstanceId.SharedInstance.Token}");
 
                     //TODO: Change Topic to what is required
@@ -232,12 +209,10 @@ namespace Alice.iOS
             {
                 if (error != null)
                 {
-                //ShowMessage("Unable to connect to FCM", error.LocalizedDescription);
-                System.Diagnostics.Debug.WriteLine("Unable to connect to FCM " + error.LocalizedDescription);
+                    System.Diagnostics.Debug.WriteLine("Unable to connect to FCM " + error.LocalizedDescription);
                 }
                 else
                 {
-                    //ShowMessage("Success!", "Connected to FCM");
                     System.Diagnostics.Debug.WriteLine("Success! Connected to FCM");
                     System.Diagnostics.Debug.WriteLine($"Token: {InstanceId.SharedInstance.Token}");
 
@@ -245,35 +220,6 @@ namespace Alice.iOS
                     Messaging.SharedInstance.Subscribe("/topics/chat");
                 }
             });
-        }
-
-        public static void ShowMessage(string title, string message, UIViewController fromViewController, Action actionForOk = null)
-        {
-            if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
-            {
-                var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, (obj) =>
-                {
-                    if (actionForOk != null)
-                    {
-                        actionForOk();
-                    }
-                }));
-                fromViewController.PresentViewController(alert, true, null);
-            }
-            else
-            {
-                new UIAlertView(title, message, null, "Ok", null).Show();
-            }
-        }
-
-
-
-
-        private void debugAlert(string title, string message)
-        {
-            var alert = new UIAlertView(title ?? "Title", message ?? "Message", null, "Cancel", "OK");
-            alert.Show();
         }
     }
 
