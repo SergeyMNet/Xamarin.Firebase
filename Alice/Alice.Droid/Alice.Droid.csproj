@@ -165,6 +165,14 @@
       <HintPath>..\..\packages\Xamarin.Firebase.Messaging.42.1001.0\lib\MonoAndroid70\Xamarin.Firebase.Messaging.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Xamarin.Firebase.Storage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Firebase.Storage.42.1001.0\lib\MonoAndroid41\Xamarin.Firebase.Storage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Firebase.Storage.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Firebase.Storage.Common.42.1001.0\lib\MonoAndroid70\Xamarin.Firebase.Storage.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.4.224\lib\MonoAndroid10\Xamarin.Forms.Core.dll</HintPath>
       <Private>True</Private>
@@ -195,10 +203,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\AbstractServiceWithActivity.cs" />
+    <Compile Include="Helpers\AsyncHelper.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="PickFileActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FirebaseAuthAndroid.cs" />
+    <Compile Include="Services\FirebaseStorageAndroid.cs" />
     <Compile Include="Services\MyFirebaseIdService.cs" />
     <Compile Include="Services\MyFirebaseMessagingService.cs" />
   </ItemGroup>
@@ -221,7 +233,9 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\AndroidManifest.xml" />
+    <None Include="Properties\AndroidManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Tabbar.axml" />
@@ -290,6 +304,8 @@
     <Error Condition="!Exists('..\..\packages\Xamarin.Build.Download.0.4.3\build\Xamarin.Build.Download.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Build.Download.0.4.3\build\Xamarin.Build.Download.targets'))" />
     <Error Condition="!Exists('..\..\packages\Xamarin.Android.Support.v7.CardView.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.v7.CardView.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Android.Support.v7.CardView.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.v7.CardView.targets'))" />
     <Error Condition="!Exists('..\..\packages\Xamarin.Forms.2.3.4.224\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.3.4.224\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Xamarin.Firebase.Storage.Common.42.1001.0\build\MonoAndroid70\Xamarin.Firebase.Storage.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Firebase.Storage.Common.42.1001.0\build\MonoAndroid70\Xamarin.Firebase.Storage.Common.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Xamarin.Firebase.Storage.42.1001.0\build\MonoAndroid70\Xamarin.Firebase.Storage.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Firebase.Storage.42.1001.0\build\MonoAndroid70\Xamarin.Firebase.Storage.targets'))" />
   </Target>
   <Import Project="..\..\packages\Xamarin.GooglePlayServices.Basement.42.1001.0\build\MonoAndroid70\Xamarin.GooglePlayServices.Basement.targets" Condition="Exists('..\..\packages\Xamarin.GooglePlayServices.Basement.42.1001.0\build\MonoAndroid70\Xamarin.GooglePlayServices.Basement.targets')" />
   <Import Project="..\..\packages\Xamarin.GooglePlayServices.Tasks.42.1001.0\build\MonoAndroid70\Xamarin.GooglePlayServices.Tasks.targets" Condition="Exists('..\..\packages\Xamarin.GooglePlayServices.Tasks.42.1001.0\build\MonoAndroid70\Xamarin.GooglePlayServices.Tasks.targets')" />
@@ -315,4 +331,6 @@
   <Import Project="..\..\packages\Xamarin.Build.Download.0.4.3\build\Xamarin.Build.Download.targets" Condition="Exists('..\..\packages\Xamarin.Build.Download.0.4.3\build\Xamarin.Build.Download.targets')" />
   <Import Project="..\..\packages\Xamarin.Android.Support.v7.CardView.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.v7.CardView.targets" Condition="Exists('..\..\packages\Xamarin.Android.Support.v7.CardView.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.v7.CardView.targets')" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.4.224\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.224\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
+  <Import Project="..\..\packages\Xamarin.Firebase.Storage.Common.42.1001.0\build\MonoAndroid70\Xamarin.Firebase.Storage.Common.targets" Condition="Exists('..\..\packages\Xamarin.Firebase.Storage.Common.42.1001.0\build\MonoAndroid70\Xamarin.Firebase.Storage.Common.targets')" />
+  <Import Project="..\..\packages\Xamarin.Firebase.Storage.42.1001.0\build\MonoAndroid70\Xamarin.Firebase.Storage.targets" Condition="Exists('..\..\packages\Xamarin.Firebase.Storage.42.1001.0\build\MonoAndroid70\Xamarin.Firebase.Storage.targets')" />
 </Project>

@@ -48,6 +48,7 @@
     <Compile Include="Facebook\Pages\MainCsPage.cs" />
     <Compile Include="Facebook\Services\FacebookServices.cs" />
     <Compile Include="Facebook\ViewModels\FacebookViewModel.cs" />
+    <Compile Include="Helpers\LazyResolver.cs" />
     <Compile Include="Models\ChatMessage.cs" />
     <Compile Include="Models\FirebaseModels\MessageModel.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -64,10 +65,12 @@
     <Compile Include="Services\ChatService.cs" />
     <Compile Include="Services\IChatService.cs" />
     <Compile Include="Services\IFirebaseAuth.cs" />
+    <Compile Include="Services\IFirebaseStorage.cs" />
     <Compile Include="Services\ViewModelLocator.cs" />
     <Compile Include="ViewModels\BaseVM.cs" />
     <Compile Include="ViewModels\ChatVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
+    <Compile Include="ViewModels\TestVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml">

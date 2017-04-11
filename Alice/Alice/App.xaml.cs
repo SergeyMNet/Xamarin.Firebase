@@ -15,7 +15,7 @@ namespace Alice
         public App()
         {
             InitializeComponent();
-            MainPage = new MainPage();
+            MainPage = new PageTest(); // new MainPage();
         }
 
         protected override void OnStart()
