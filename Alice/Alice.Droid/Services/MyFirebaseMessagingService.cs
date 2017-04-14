@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Alice.Models;
 using Alice.Services;
 using Android.App;
 using Android.Content;
@@ -30,11 +31,29 @@ namespace Alice.Droid.Services
             try
             {
                 if (message.GetNotification() != null)
-                    SendNotification(message.GetNotification().Body);
+                {
+                    var messageAdmin = new ChatMessage()
+                    {
+                        IsYourMessage = false,
+                        UserName = "Admin",
+                        Text = message.GetNotification().Body,
+                    };
+
+                    SendNotification(messageAdmin);
+                }
 
                 if (message.Data.Count > 0)
                 {
-                    SendNotification(message.Data["message"], message.Data["username"], message.Data["photo"]);
+                    var messagePush = new ChatMessage()
+                    {
+                        IsYourMessage = false,
+                        UserName = message.Data["username"],
+                        Text = message.Data["message"],
+                        UrlPhoto = message.Data["photo"],
+                        AttachImg = message.Data["attach"],
+                    };
+
+                    SendNotification(messagePush);
                 }
             }
             catch (Exception e)
@@ -44,7 +63,7 @@ namespace Alice.Droid.Services
             }
         }
 
-        private void SendNotification(string body, string name = "admin", string photo = "")
+        private void SendNotification(ChatMessage message)
         {
             var intent = new Intent(this, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop | ActivityFlags.SingleTop);
@@ -53,8 +72,8 @@ namespace Alice.Droid.Services
             var defaultSoundUri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
             var notificationBuilder = new NotificationCompat.Builder(this)
                 .SetSmallIcon(Resource.Drawable.icon)   // Display this icon
-                .SetContentTitle(name)                  // Set its title
-                .SetContentText(body)                   // The message to display.
+                .SetContentTitle(message.UserName)      // Set its title
+                .SetContentText(message.Text)           // The message to display.
                 .SetAutoCancel(true)                    // Dismiss from the notif. area when clicked
                 .SetSound(defaultSoundUri)              // Sound of message
                 .SetContentIntent(pendingIntent);
@@ -68,7 +87,7 @@ namespace Alice.Droid.Services
             else
             {
                 var chatService = ViewModelLocator.Instance.Resolve(typeof(ChatService)) as IChatService;
-                chatService.OnMessageReceived(name, body, photo);
+                chatService.OnMessageReceived(message);
             }
 
             

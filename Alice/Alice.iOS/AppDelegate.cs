@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alice.Models;
 using Alice.Services;
 using Firebase.CloudMessaging;
 using Firebase.InstanceID;
@@ -147,9 +148,19 @@ namespace Alice.iOS
             var name = remoteMessage.AppData["username"];
             var body = remoteMessage.AppData["message"];
             var photo = remoteMessage.AppData["photo"];
+            var attach = remoteMessage.AppData["attach"];
+
+            var message = new ChatMessage()
+            {
+                IsYourMessage = false,
+                Text = body.ToString(),
+                UserName = name.ToString(),
+                UrlPhoto = photo.ToString(),
+                AttachImg = attach.ToString()
+            };
 
             var chatService = ViewModelLocator.Instance.Resolve(typeof(ChatService)) as IChatService;
-            chatService.OnMessageReceived(name.ToString(), body.ToString(), photo.ToString());
+            chatService.OnMessageReceived(message);
         }
 
         

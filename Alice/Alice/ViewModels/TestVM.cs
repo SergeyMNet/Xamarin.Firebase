@@ -38,8 +38,12 @@ namespace Alice.ViewModels
 
         private async void StartTest()
         {
-            var url = await _firebaseStorage.GetFileUrl("");
+            IsBusy = true;
+
+            var url = await _firebaseStorage.GetFileUrl("cute_pink_chik_by_rukusucherry.jpg");
             ImgTest = url;
+
+            IsBusy = false;
         }
 
 
@@ -47,8 +51,15 @@ namespace Alice.ViewModels
 
         private async void StartTest2()
         {
-            _firebaseStorage.UploadFiles();
-            //ImgTest = url;
+            IsBusy = true;
+
+            var file = await _firebaseStorage.UploadFiles();
+            var url = await _firebaseStorage.GetFileUrl(file);
+            ImgTest = url;
+
+            System.Diagnostics.Debug.WriteLine("---> url " + url);
+
+            IsBusy = false;
         }
     }
 }

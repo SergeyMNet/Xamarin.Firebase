@@ -1,5 +1,6 @@
 ﻿using Alice.DataServices;
 using System;
+using Alice.Models;
 using Alice.Models.FirebaseModels;
 
 namespace Alice.Services
@@ -13,18 +14,19 @@ namespace Alice.Services
         }
 
         public event EventHandler NewMessageReceived;
-        public void OnMessageReceived(string name, string text, string photo = "")
+        public void OnMessageReceived(ChatMessage message)
         {
             EventHandler eh = NewMessageReceived;
             if (eh != null)
-                eh(this, new BodyEventArgs(name, text, photo));
+                eh(this, new BodyEventArgs(message));
         }
 
-        public void SendMessage(string name, string text, string photo)
+        public void SendMessage(ChatMessage message)
         {
             string url = "https://fcm.googleapis.com/fcm/send";
-            MessageModel model = new MessageModel(name, text, photo);
-            _requestProvider.PostAsync(url, model);
+
+            var data = new MessageModel(message);
+            _requestProvider.PostAsync(url, data);
         }
         
     }
@@ -32,15 +34,11 @@ namespace Alice.Services
 
     public class BodyEventArgs : EventArgs
     {
-        public string Name { get; set; }
-        public string Text { get; set; }
-        public string UrlPhoto { get; set; }
-
-        public BodyEventArgs(string name, string text, string photo)
+        public ChatMessage Message { get; set; }
+        
+        public BodyEventArgs(ChatMessage message)
         {
-            Name = name;
-            Text = text;
-            UrlPhoto = photo;
+            Message = message;
         }
     }
 }

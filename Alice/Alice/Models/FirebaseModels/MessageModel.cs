@@ -13,23 +13,11 @@ namespace Alice.Models.FirebaseModels
         public string To { get; set; } = "/topics/chat";
 
         [JsonProperty("data")]
-        public DataModel Data { get; set; }
+        public ChatMessage Message { get; set; }
 
-        public MessageModel(string name, string text, string photo)
+        public MessageModel(ChatMessage message)
         {
-            Data = new DataModel() {UserName = name, Message = text, UrlPhoto = photo};
+            Message = message;
         }
-    }
-
-    public class DataModel
-    {
-        [JsonProperty("username")]
-        public string UserName { get; set; }
-
-        [JsonProperty("message")]
-        public string Message { get; set; }
-
-        [JsonProperty("photo")]
-        public string UrlPhoto { get; set; }
     }
 }

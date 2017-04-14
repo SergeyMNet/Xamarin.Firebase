@@ -10,6 +10,13 @@ namespace Alice.ViewModels
 {
     public class BaseVM : INotifyPropertyChanged
     {
+        private bool _isBusy;
+
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { _isBusy = value; OnPropertyChanged(); }
+        }
 
 
         #region PropertyChangedEventHandler

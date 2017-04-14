@@ -8,9 +8,7 @@ namespace Alice.Services
 {
     public interface IFirebaseStorage
     {
-        void UploadFiles();
-        void DownloadFiles();
-
+        Task<string> UploadFiles();
 
         Task<string> GetFileUrl(string filename);
     }

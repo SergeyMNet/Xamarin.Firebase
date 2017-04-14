@@ -6,6 +6,7 @@ using Alice.Services;
 using Android.App;
 using Android.Content;
 using Android.Gms.Extensions;
+using Android.Gms.Tasks;
 using Firebase.Storage;
 using Xamarin.Forms;
 using Object = Java.Lang.Object;
@@ -15,68 +16,63 @@ namespace Alice.Droid.Services
 {
     public class FirebaseStorageAndroid : IFirebaseStorage
     {
-        public async void UploadFiles()
+        private string _storage = "gs://alice-1d9df.appspot.com";
+
+        /// <summary>
+        /// Upload local file to external storage
+        /// </summary>
+        /// <returns>Url to external file</returns>
+        public async Task<string> UploadFiles()
         {
+            var result = "";
+            int timeWait = 250;
+            int countWait = 0;
+            int maxCountWait = 20;
+
+
             try
             {
                 var activity = Forms.Context as Activity;
 
-                PickFileActivity.OnFinishAction = (path) =>
+                PickFileActivity.OnFinishAction = async (path) =>
                 {
-                    try
-                    {
-                        // todo do some with path
-                        System.Diagnostics.Debug.WriteLine("---> path " + path);
-
-
-                        activity.StartActivity(new Intent(Forms.Context, typeof(MainActivity)));
-
-                        SaveFileToStorage(path);
-                    }
-                    catch (Exception e)
-                    {
-                        //Getting ticket failed, possibly because YouTubeHook is null or
-                        //its access is denied. Switch to main screen.
-                        Console.WriteLine(e.Message);
-                        activity.StartActivity(new Intent(Forms.Context, typeof(MainActivity)));
-                    }
+                    result = await SaveFileToStorage(path);
                 };
-
-                PickFileActivity.OnCancelAction = () =>
-                    activity.StartActivity(new Intent(Forms.Context, typeof(MainActivity)));
-
-                activity.StartActivity(new Intent(Forms.Context, typeof(PickFileActivity)));
-
-
+                
+                activity?.StartActivity(new Intent(Forms.Context, typeof(PickFileActivity)));
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("---> Error UploadFiles " + ex.Message);
+                countWait = maxCountWait;
             }
+
+            do
+            {
+                countWait++;
+                await System.Threading.Tasks.Task.Delay(timeWait);
+            }
+            while (result == "" || countWait < maxCountWait);
+
+            return result;
         }
 
-        public void DownloadFiles()
-        {
-            throw new NotImplementedException();
-        }
 
-
-
+        /// <summary>
+        /// Get Url to external(firebase storage) file 
+        /// </summary>
+        /// <param name="filename">name file</param>
+        /// <returns>Url to external file</returns>
         public async Task<string> GetFileUrl(string filename)
         {
             try
             {
-                filename = "type_drive.png";
-                
                 var storage = FirebaseStorage.Instance;
-                var storageRef = storage.GetReferenceFromUrl("gs://alice-1d9df.appspot.com");
-                var spaceRef = storageRef.Child($"{filename}");
+                var storageRef = storage.GetReferenceFromUrl(_storage);
+                var spaceRef = storageRef.Child($"images/{filename}");
                 var url = await spaceRef.DownloadUrl;
 
                 filename = url.ToString();
-
-                System.Diagnostics.Debug.WriteLine("---> result " + url.ToString());
-                
             }
             catch (Exception ex)
             {
@@ -87,43 +83,40 @@ namespace Alice.Droid.Services
         }
 
 
-        private void SaveFileToStorage(string localPath)
+
+
+        #region Helpers
+
+        /// <summary>
+        ///  Save File To Firebase Storage and return url to file
+        /// </summary>
+        /// <param name="localPath">url to local file</param>
+        /// <returns>url to external file</returns>
+        private async Task<string> SaveFileToStorage(string localPath)
         {
-            var storage = FirebaseStorage.Instance;
-            var storageRef = storage.GetReferenceFromUrl("gs://alice-1d9df.appspot.com");
-            
-            var bytes = System.IO.File.ReadAllBytes(localPath);
-            var metadata = new StorageMetadata.Builder()
-                .SetContentType("image/jpeg")
-                .Build();
+            try
+            {
+                var storage = FirebaseStorage.Instance;
+                var storageRef = storage.GetReferenceFromUrl("gs://alice-1d9df.appspot.com");
 
-            var child = storageRef.Child("images/" + Path.GetFileName(localPath));
-            var uploadTask = child.PutBytes(bytes, metadata);
+                var bytes = System.IO.File.ReadAllBytes(localPath);
+                var metadata = new StorageMetadata.Builder()
+                    .SetContentType("image/jpeg")
+                    .Build();
 
-            var activity = Forms.Context as Activity;
+                var child = storageRef.Child("images/" + Path.GetFileName(localPath));
+                await child.PutBytes(bytes, metadata);
+                
+                localPath = Path.GetFileName(localPath);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("---> Error SaveFileToStorage " + ex.Message);
+            }
 
-            // Listen for state changes, errors, and completion of the upload.
-            uploadTask.AddOnProgressListener(activity, new ProgressListener());
+            return localPath;
+        } 
 
-        }
-
-      
-    }
-
-
-    public class ProgressListener : IOnProgressListener
-    {
-        public void Dispose()
-        {
-            //this.Dispose();
-        }
-
-        public IntPtr Handle { get; }
-        public void OnProgress(Object snapshot)
-        {
-            var taskSnapshot = snapshot as UploadTask.TaskSnapshot;
-            double progress = (100.0 * taskSnapshot.BytesTransferred) / taskSnapshot.TotalByteCount;
-            System.Diagnostics.Debug.WriteLine("---> " + progress);
-        }
+        #endregion
     }
 }

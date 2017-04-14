@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Alice.Models;
 
 namespace Alice.Services
 {
     public interface IChatService
     {
         event EventHandler NewMessageReceived;
-        void OnMessageReceived(string name, string text, string photo);
+        void OnMessageReceived(ChatMessage message);
         
-        void SendMessage(string name, string text, string photo);
+        void SendMessage(ChatMessage message);
     }
 
 

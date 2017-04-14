@@ -38,9 +38,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ImgPickerPage.cs" />
     <Compile Include="Controls\SessionCell.cs" />
     <Compile Include="Converters\BoolToColorMessage.cs" />
     <Compile Include="Converters\BoolToPositionMessage.cs" />
+    <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="DataServices\IRequestProvider.cs" />
     <Compile Include="DataServices\RequestProvider.cs" />
     <Compile Include="Facebook\Models\FacebookProfile.cs" />

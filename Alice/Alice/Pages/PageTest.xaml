@@ -9,6 +9,8 @@
         <Image
             Source="{Binding ImgTest}"/>
         
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        
         <Button 
             BackgroundColor="Black"
             TextColor="White"

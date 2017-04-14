@@ -7,7 +7,7 @@ using System;
 
 namespace Alice.Droid
 {
-    [Activity(Label = "Uptred Mobile")]
+    [Activity(Label = "PickFileActivity")]
     public class PickFileActivity : Activity
     {
         public static readonly int PickImageId = 1000;
@@ -17,13 +17,14 @@ namespace Alice.Droid
         {
             base.OnCreate(bundle);
 
-            Intent = new Intent(Intent.ActionPick, Android.Provider.MediaStore.Images.Media.ExternalContentUri);// Android.Provider.MediaStore.Video.Media.ExternalContentUri);
+            Intent = new Intent(Intent.ActionPick, Android.Provider.MediaStore.Images.Media.ExternalContentUri);
             Intent.SetAction(Intent.ActionPick);
             StartActivityForResult(Intent, PickImageId);
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
+            
             if ((requestCode == PickImageId) && (resultCode == Result.Ok) && (data != null))
             {
                 Uri uri = data.Data;
@@ -31,8 +32,11 @@ namespace Alice.Droid
                 if (path != null && System.IO.File.Exists(path))
                 {
                     Console.WriteLine(string.Format("PickFileActivity terminated with {0}", path));
-                    if (OnFinishAction != null) OnFinishAction(path);
-                    return;
+
+                    if (OnFinishAction != null)
+                        OnFinishAction(path);
+
+                    Finish();
                 }
                 else
                 {
@@ -40,6 +44,8 @@ namespace Alice.Droid
                 }
             }
             if (OnCancelAction != null) OnCancelAction();
+
+            Finish();
         }
 
         private string GetPathToImage(Uri uri)

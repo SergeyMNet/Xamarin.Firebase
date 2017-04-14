@@ -14,7 +14,7 @@ using Firebase.Auth;
 namespace Alice.Droid
 {
     [Activity(Label = "Alice", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IOnCompleteListener //, FirebaseAuth.IAuthStateListener
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IOnCompleteListener 
     {
         //private FirebaseAuth mAuth;
         //GoogleApiClient mGoogleApiClient;
@@ -92,14 +92,6 @@ namespace Alice.Droid
             Toast.MakeText(this, message, ToastLength.Long).Show();
         }
 
-        //public void OnAuthStateChanged(FirebaseAuth auth)
-        //{
-        //    var user = auth.CurrentUser;
-
-
-        //    System.Diagnostics.Debug.WriteLine("---> OnAuthStateChanged user => " + user);
-            
-        //}
     }
 }
 

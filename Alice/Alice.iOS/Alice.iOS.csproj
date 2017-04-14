@@ -95,6 +95,8 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Renders\ImagePicker.cs" />
+    <Compile Include="Renders\InstaCamController.cs" />
     <Compile Include="Services\FirebaseAuthIOS.cs" />
     <Compile Include="Services\FirebaseStorageIOS.cs" />
     <None Include="Entitlements.plist" />
@@ -205,6 +207,9 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\attach.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

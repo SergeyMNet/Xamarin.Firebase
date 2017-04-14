@@ -37,15 +37,22 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <controls:SessionCell>
-                            
                             <StackLayout BackgroundColor="{Binding IsYourMessage, Converter={StaticResource BoolToColorMessage}}" 
                                          Margin="{Binding IsYourMessage, Converter={StaticResource BoolToPositionMessage}}"
-                                         VerticalOptions="FillAndExpand" HeightRequest="50"
+                                         VerticalOptions="FillAndExpand" 
                                          Padding="10">
-                                <Label FontSize="10"
-                                       TextColor="Gray"
-                                       Text="{Binding UserName}"></Label>
-                                <Label Text="{Binding Text}"></Label>
+                                
+                                <Label FontSize="10" TextColor="Gray"
+                                       Text="{Binding UserName}" />
+
+                                <Label IsVisible="{Binding Text, Converter={ StaticResource NullToBoolConverter}}"
+                                    Text="{Binding Text}" />
+
+                                <Image Source="{Binding AttachImg}" 
+                                       HeightRequest="100" Aspect="AspectFit" 
+                                       HorizontalOptions="StartAndExpand"
+                                    IsVisible="{Binding AttachImg, Converter={ StaticResource NullToBoolConverter}}" />
+                                
                             </StackLayout>
                         </controls:SessionCell>
                     </DataTemplate>
@@ -60,7 +67,8 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="9*" />
+                <ColumnDefinition Width="8*" />
+                <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" 
@@ -75,6 +83,13 @@
             </Entry>
 
             <Image Grid.Row="1" Grid.Column="1"
+                   Source="attach" Aspect="AspectFit" WidthRequest="30" VerticalOptions="Center">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AttachFileCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
+            
+            <Image Grid.Row="1" Grid.Column="2"
                    Source="send" Aspect="AspectFit" WidthRequest="30" VerticalOptions="Center">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding AddMessageCommand}" />
