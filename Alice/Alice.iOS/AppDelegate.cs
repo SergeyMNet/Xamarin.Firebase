@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Alice.Models;
 using Alice.Services;
+using FFImageLoading.Forms.Touch;
 using Firebase.CloudMessaging;
 using Firebase.InstanceID;
 using Foundation;
@@ -30,6 +31,8 @@ namespace Alice.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
+
+            CachedImageRenderer.Init();
 
             // Monitor token generation
             InstanceId.Notifications.ObserveTokenRefresh(TokenRefreshNotification);

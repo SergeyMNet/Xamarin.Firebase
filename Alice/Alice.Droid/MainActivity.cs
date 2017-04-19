@@ -10,6 +10,7 @@ using Firebase.Messaging;
 using Firebase.Database;
 using System.Collections.Generic;
 using Alice.Models;
+using FFImageLoading.Forms.Droid;
 using GoogleGson;
 using Java.Util;
 using Newtonsoft.Json;
@@ -19,11 +20,7 @@ namespace Alice.Droid
     [Activity(Label = "Alice", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IOnCompleteListener
     {
-        //private FirebaseAuth mAuth;
-        //GoogleApiClient mGoogleApiClient;
-        //private static int RC_SIGN_IN = 9001;
-
-
+        
         protected override void OnCreate(Bundle bundle)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -40,7 +37,8 @@ namespace Alice.Droid
                 throw new SystemException("Invalid Json file");
             
             GetTokenFcm();
-            
+
+            CachedImageRenderer.Init();
         }
 
         

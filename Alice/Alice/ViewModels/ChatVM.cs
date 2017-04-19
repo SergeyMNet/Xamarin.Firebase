@@ -43,35 +43,49 @@ namespace Alice.ViewModels
 
             Action<Dictionary<string, ChatMessage>> onValueEvent = (Dictionary<string, ChatMessage> messages) =>
             {
-
-                System.Diagnostics.Debug.WriteLine("---> EVENT GetDataFromFirebase ");
-
-                Action onSetValueSuccess = () =>
+                try
                 {
-                
-                };
 
-                Action<string> onSetValueError = (string errorDesc) =>
-                {
-                    
-                };
+                    System.Diagnostics.Debug.WriteLine("---> EVENT GetDataFromFirebase ");
 
-                if (messages == null)
-                {
-                    
-                }
-                else
-                {
-                    if (messages.Count != 0 && ChatMessages.Count != messages.Count)
+                    Action onSetValueSuccess = () =>
                     {
-                        ChatMessages.Clear();
-                        foreach (var message in messages.OrderBy(m => m.Value.DateMessageTimeSpan))
-                        {
-                            message.Value.IsYourMessage = UserCurent.Name == message.Value.UserName;
-                            ChatMessages.Add(message.Value);
-                        }
-                        MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
+
+                    };
+
+                    Action<string> onSetValueError = (string errorDesc) =>
+                    {
+
+                    };
+
+                    if (messages == null)
+                    {
+
                     }
+                    else
+                    {
+                        if (messages.Count != 0 && ChatMessages.Count != messages.Count)
+                        {
+                            foreach (var message in messages.OrderBy(m => m.Value.DateMessageTimeSpan))
+                            {
+                                message.Value.IsYourMessage = UserCurent.Name == message.Value.UserName;
+
+                                if (ChatMessages.All(m => m.Id != message.Value.Id))
+                                {
+                                    ChatMessages.Add(message.Value);
+                                    System.Diagnostics.Debug.WriteLine("---> add new -> " + message.Value.Id);
+                                }
+                            }
+                            
+                            MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    System.Diagnostics.Debug.WriteLine("---> error GetDataFromFirebase " + ex.Message);
+                    throw;
                 }
             };
             
@@ -146,33 +160,6 @@ namespace Alice.ViewModels
 
 
         #region Commands
-        
-        private async void AttachFile()
-        {
-            IsBusy = true;
-            
-            var file = await _firebaseStorage.UploadFiles();
-            var url = await _firebaseStorage.GetFileUrl(file);
-
-            System.Diagnostics.Debug.WriteLine("---> url " + url);
-
-            var message = new ChatMessage()
-            {
-                IsYourMessage = true,
-                AttachImg = url,
-                UserName = UserCurent.Name
-            };
-            
-            ChatMessages.Add(message);
-
-            MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
-            _chatService.SendMessage(message);
-
-            _firebaseDatabase.SetValue(nodePath + "/" + message.Id, message);
-
-            NewMessageText = "";
-            IsBusy = false;
-        }
 
         private void Logout()
         {
@@ -180,25 +167,51 @@ namespace Alice.ViewModels
             App.Current.MainPage = new MainPage();
         }
 
+
+        private async void AttachFile()
+        {
+            IsBusy = true;
+            
+            var file = await _firebaseStorage.UploadFiles();
+            var url = await _firebaseStorage.GetFileUrl(file);
+            
+            SendMessage(url);
+            IsBusy = false;
+        }
+        
         private void AddMessage()
+        {
+            IsBusy = true;
+
+            if (!String.IsNullOrEmpty(NewMessageText))
+            {
+                SendMessage();
+            }
+
+            IsBusy = false;
+        }
+
+        private void SendMessage(string attach = "")
         {
             var message = new ChatMessage()
             {
                 IsYourMessage = true,
                 Text = NewMessageText,
-                UserName = UserCurent.Name
+                AttachImg = attach,
+                UserName = UserCurent.Name,
+                UrlPhoto = UserCurent.UrlPhoto
             };
 
             ChatMessages.Add(message);
 
             MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
             _chatService.SendMessage(message);
-            
+
             _firebaseDatabase.SetValue(nodePath + "/" + message.Id, message);
 
             NewMessageText = "";
         }
-        
+
         #endregion
 
 

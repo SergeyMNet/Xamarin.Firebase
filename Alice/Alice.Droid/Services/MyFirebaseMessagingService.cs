@@ -30,20 +30,19 @@ namespace Alice.Droid.Services
 
             try
             {
-                if (message.GetNotification() != null)
-                {
-                    var messageAdmin = new ChatMessage()
-                    {
-                        IsYourMessage = false,
-                        UserName = "Admin",
-                        Text = message.GetNotification().Body,
-                    };
-
-                    SendNotification(messageAdmin);
-                }
+                
 
                 if (message.Data.Count > 0)
                 {
+                    long l = 0;
+                    if (message.Data["date_message"] != null)
+                    {
+                        var str = message.Data["date_message"];
+                        int result = 0;
+                        Int32.TryParse(str, out result);
+                        l = result;
+                    }
+
                     var messagePush = new ChatMessage()
                     {
                         IsYourMessage = false,
@@ -51,9 +50,24 @@ namespace Alice.Droid.Services
                         Text = message.Data["message"],
                         UrlPhoto = message.Data["photo"],
                         AttachImg = message.Data["attach"],
+                        DateMessageTimeSpan = l,
                     };
 
                     SendNotification(messagePush);
+                }
+                else
+                {
+                    if (message.GetNotification() != null)
+                    {
+                        var messageAdmin = new ChatMessage()
+                        {
+                            IsYourMessage = false,
+                            UserName = "Admin",
+                            Text = message.GetNotification().Body,
+                        };
+
+                        SendNotification(messageAdmin);
+                    }
                 }
             }
             catch (Exception e)

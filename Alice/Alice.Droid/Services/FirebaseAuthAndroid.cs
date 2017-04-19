@@ -86,7 +86,7 @@ namespace Alice.Droid.Services
 
             return new UserModel(
                     id: "001",
-                    name: "test error",
+                    name: "",
                     photo: "");
         }
 

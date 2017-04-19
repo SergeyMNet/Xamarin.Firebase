@@ -9,7 +9,7 @@
             <converters:BoolToPositionMessage x:Key="BoolToPositionMessage" />
             <converters:BoolToColorMessage x:Key="BoolToColorMessage" />
             <converters:NullToBoolConverter x:Key="NullToBoolConverter" />
-
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
             
 
         </ResourceDictionary>

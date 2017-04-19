@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Alice.Facebook.Pages;
 using Alice.Pages;
@@ -14,8 +15,20 @@ namespace Alice.ViewModels
 
         public MainVM()
         {
-            
+            var user = _firebaseAuth.GetUser();
+            if (!String.IsNullOrEmpty(user.Name))
+            {
+                MoveToChat();
+            }
         }
+
+
+        async Task MoveToChat()
+        {
+            await Task.Delay(500);
+            App.Current.MainPage = new ChatPage();
+        }
+        
 
         private string _login = "admin@aa.aa";
 

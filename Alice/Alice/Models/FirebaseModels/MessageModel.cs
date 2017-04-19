@@ -29,7 +29,7 @@ namespace Alice.Models.FirebaseModels
             {
                 Title = "Alice new message",
                 Body = message.Text,
-                Icon = "icon"
+                Icon = "mail"
             };
         }
     }

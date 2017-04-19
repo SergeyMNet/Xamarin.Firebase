@@ -2,6 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Alice.Controls;assembly=Alice"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:transformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:behaviors="clr-namespace:Alice.Behaviors;assembly=Alice"
+
+
              x:Class="Alice.Pages.ChatPage">
     <Grid BackgroundColor="#DADADA">
         <Grid.RowDefinitions>
@@ -19,7 +24,12 @@
                             Android="0" iOS="0,10,0,0"/>
             </StackLayout.Margin>
 
-            <Image Source="{Binding UserCurent.UrlPhoto}" Aspect="AspectFit" HeightRequest="30" />
+            <forms:CachedImage Source="{Binding UserCurent.UrlPhoto}" Aspect="AspectFit" HeightRequest="30" >
+                <forms:CachedImage.Transformations>
+                    <transformations:GrayscaleTransformation />
+                    <transformations:CircleTransformation />
+                </forms:CachedImage.Transformations>
+            </forms:CachedImage>
             <Label  Text="{Binding UserCurent.Name}" FontSize="12" TextColor="Gray" VerticalOptions="Center" />
             <Image Source="logout" Aspect="AspectFit" HeightRequest="30"
                    VerticalOptions="Center" HorizontalOptions="EndAndExpand" >
@@ -37,16 +47,30 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <controls:SessionCell>
-                            <StackLayout BackgroundColor="{Binding IsYourMessage, Converter={StaticResource BoolToColorMessage}}" 
-                                         Margin="{Binding IsYourMessage, Converter={StaticResource BoolToPositionMessage}}"
+                            <StackLayout Margin="{Binding IsYourMessage, Converter={StaticResource BoolToPositionMessage}}"
+                                         HorizontalOptions="FillAndExpand"
                                          VerticalOptions="FillAndExpand" 
-                                         Padding="10">
+                                          Orientation="Horizontal">
+
+                                <forms:CachedImage IsVisible="{Binding IsYourMessage, Converter={StaticResource InverseBoolConverter}}"
+                                                   VerticalOptions="Start"
+                                                   Source="{Binding UrlPhoto}" Aspect="AspectFit" HeightRequest="30" >
+                                    <forms:CachedImage.Transformations>
+                                        <transformations:GrayscaleTransformation />
+                                        <transformations:CircleTransformation />
+                                    </forms:CachedImage.Transformations>
+                                </forms:CachedImage>
+
+                                <StackLayout BackgroundColor="{Binding IsYourMessage, Converter={StaticResource BoolToColorMessage}}" 
+                                             HorizontalOptions="FillAndExpand"
+                                             VerticalOptions="FillAndExpand" 
+                                             Padding="10"
+                                             Orientation="Vertical">
                                 
                                 <Grid HorizontalOptions="FillAndExpand">
                                 <Label FontSize="10" TextColor="Gray"
                                        HorizontalOptions="Start"
                                        Text="{Binding UserName}" />
-
                                 <Label FontSize="10" TextColor="Gray"
                                        HorizontalOptions="End"
                                        Text="{Binding DateMessageDate}" />
@@ -55,11 +79,21 @@
                                 <Label IsVisible="{Binding Text, Converter={ StaticResource NullToBoolConverter}}"
                                     Text="{Binding Text}" />
 
-                                <Image Source="{Binding AttachImg}" 
+                                <forms:CachedImage Source="{Binding AttachImg}"
                                        HeightRequest="100" Aspect="AspectFit" 
                                        HorizontalOptions="StartAndExpand"
                                     IsVisible="{Binding AttachImg, Converter={ StaticResource NullToBoolConverter}}" />
-                                
+
+                                </StackLayout>
+
+                                <forms:CachedImage IsVisible="{Binding IsYourMessage}" VerticalOptions="Start"
+                                                   Source="{Binding UrlPhoto}" Aspect="AspectFit" HeightRequest="30" >
+                                    <forms:CachedImage.Transformations>
+                                        <transformations:GrayscaleTransformation />
+                                        <transformations:CircleTransformation />
+                                    </forms:CachedImage.Transformations>
+                                </forms:CachedImage>
+
                             </StackLayout>
                         </controls:SessionCell>
                     </DataTemplate>
@@ -67,6 +101,7 @@
             </ListView>
         </StackLayout>
 
+        <!--loading-->
         <Grid Grid.Row="1" IsVisible="{Binding IsBusy}"
               BackgroundColor="#7CFFFFFF" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <ActivityIndicator IsRunning="{Binding IsBusy}"
@@ -90,6 +125,9 @@
             <Entry x:Name="EntryChat" Grid.Row="1" Grid.Column="0" 
                    FontSize="12" VerticalOptions="FillAndExpand"
                    Text="{Binding NewMessageText}">
+                <Entry.Behaviors>
+                    <behaviors:OnComplatedBehavior CompleteCommand="{Binding AddMessageCommand}" />
+                </Entry.Behaviors>
                 <Entry.BackgroundColor>
                     <OnPlatform x:TypeArguments="Color" Android="White" iOS="#F6F6F6" />
                 </Entry.BackgroundColor>
