@@ -66,6 +66,12 @@
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
+
+        <Grid Grid.Row="1" IsVisible="{Binding IsBusy}"
+              BackgroundColor="#7CFFFFFF" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                HorizontalOptions="Center" VerticalOptions="Center"/>
+        </Grid>
         
         <!--input-->
         <Grid x:Name="InputGrid" Grid.Row="2" Padding="20"  BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">

@@ -11,9 +11,7 @@ namespace Alice
     public partial class App : Application
     {
         public static bool IsActive = true;
-
-        public static List<ChatMessage> ChatMessages = new List<ChatMessage>();
-
+        
         public App()
         {
             InitializeComponent();

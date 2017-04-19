@@ -19,11 +19,7 @@ namespace Alice.ViewModels
         public readonly IFirebaseStorage _firebaseStorage;
         public readonly IChatService _chatService;
         public readonly IFirebaseAuth _firebaseAuth;
-
-
         
-
-
         string nodePath = "chats";
 
         public ChatVM(IChatService chatService)
@@ -34,25 +30,13 @@ namespace Alice.ViewModels
             _firebaseDatabase = DependencyService.Get<IFirebaseDatabase>();
 
             //FakeData();
-
-            //GetDataFromJson();
-            //GetDataFromFirebase();
-
+            
             _chatService.NewMessageReceived += ChatVM_NewMessageReceived;
 
             GetUser().ContinueWith(x => GetDataFromFirebase());
         }
 
-        private Task GetData()
-        {
-            ChatMessages.Clear();
-            foreach (var message in App.ChatMessages)
-            {
-                message.IsYourMessage = UserCurent.Name == message.UserName;
-                ChatMessages.Add(message);
-            }
-            return Task.FromResult(true);
-        }
+      
 
         private void GetDataFromFirebase()
         {
@@ -64,47 +48,33 @@ namespace Alice.ViewModels
 
                 Action onSetValueSuccess = () =>
                 {
-                    //if (onSuccess != null)
-                      //  onSuccess(true);
+                
                 };
 
                 Action<string> onSetValueError = (string errorDesc) =>
                 {
-                    //if (onError != null)
-                      //  onError(errorDesc);
+                    
                 };
 
                 if (messages == null)
                 {
-                    //fbDatabaseService.SetValue(ROOMS_URL_PREFIX + chatroomDataToAdd.Id, chatroomDataToAdd, onSetValueSuccess, onSetValueError);
+                    
                 }
                 else
                 {
                     if (messages.Count != 0 && ChatMessages.Count != messages.Count)
                     {
                         ChatMessages.Clear();
-                        foreach (var message in messages.OrderBy(m => m.Value))
+                        foreach (var message in messages.OrderBy(m => m.Value.DateMessageTimeSpan))
                         {
                             message.Value.IsYourMessage = UserCurent.Name == message.Value.UserName;
                             ChatMessages.Add(message.Value);
                         }
+                        MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
                     }
-                    //Room already exists just add users
-                    //foreach (string userId in chatroomDataToAdd.UserIds)
-                    //{
-                    //    if (!chatroomDataExisting.UserIds.Contains(userId))
-                    //    {
-                    //        chatroomDataExisting.UserIds.Add(userId);
-                    //    }
-                    //}
-
-                    //fbDatabaseService.SetValue(ROOMS_URL_PREFIX + chatroomDataToAdd.Id + USER_IDS_URL_SUFFIX, chatroomDataExisting.UserIds, onSetValueSuccess, onSetValueError);
                 }
             };
-
-
-            //_firebaseDatabase.AddSingleValueEvent("chats", onValueEvent);
-
+            
             _firebaseDatabase.AddValueEvent("chats", onValueEvent);
         }
 
@@ -180,7 +150,7 @@ namespace Alice.ViewModels
         private async void AttachFile()
         {
             IsBusy = true;
-
+            
             var file = await _firebaseStorage.UploadFiles();
             var url = await _firebaseStorage.GetFileUrl(file);
 
@@ -192,7 +162,7 @@ namespace Alice.ViewModels
                 AttachImg = url,
                 UserName = UserCurent.Name
             };
-
+            
             ChatMessages.Add(message);
 
             MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
@@ -240,6 +210,7 @@ namespace Alice.ViewModels
 
             if (UserCurent.Name != body.Message.UserName)
             {
+                // todo hide - because database has listner
                 //ChatMessages.Add(body.Message);
                 
                 MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");

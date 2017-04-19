@@ -165,34 +165,7 @@ namespace Alice.Droid.Services
         }
 
      
-
-
-
-        //public void SaveMessage(ChatMessage message)
-        //{
-        //    // Write a message to the database
-        //    var database = FirebaseDatabase.Instance;
-        //    DatabaseReference myRef = database.GetReferenceFromUrl("https://alice-1d9df.firebaseio.com/");
-
-        //    var main = "chats";
-        //    var id = Guid.NewGuid().ToString();
-
-        //    myRef.Child(main).Child("id").SetValue(id);
-        //    myRef.Child(main).Child("username").SetValue(message.UserName);
-        //    myRef.Child(main).Child("message").SetValue(message.Text);
-        //    myRef.Child(main).Child("attach").SetValue(message.AttachImg);
-        //    myRef.Child(main).Child("photo").SetValue(message.UrlPhoto);
-        //}
-
-        //public void GetMessages()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-
-
-
-
+        
 
         public void Search<T>(string nodeKey, Action<List<T>> action)
         {
