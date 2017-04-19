@@ -1,14 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="alice.alice" android:installLocation="auto" android:versionCode="1" android:versionName="1">
-	<uses-sdk android:minSdkVersion="19" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="alice.alice" android:installLocation="auto" android:versionCode="2" android:versionName="1.02">
+	<uses-sdk android:minSdkVersion="19" android:targetSdkVersion="22" />
 	<uses-permission android:name="android.permission.INTERNET" />
-  
-  <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
-  <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.READ_OWNER_DATA" />
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  
+	<uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+	<uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_OWNER_DATA" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<application android:label="Alice.Droid" android:icon="@drawable/icon">
 		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
 		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">

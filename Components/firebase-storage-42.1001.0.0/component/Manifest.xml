@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<component format="1" id="firebase-storage" is-shell="true">
+  <name>Firebase - Storage</name>
+  <publisher>Xamarin Inc.</publisher>
+  <publisher-url>http://xamarin.com</publisher-url>
+  <version>42.1001.0.0</version>
+  <summary>Firebase Storage is built for app developers who need to store and serve user-generated content, such as photos or videos.</summary>
+  <packages>
+    <package id="Xamarin.Firebase.Storage" version="42.1001.0" framework="android" />
+  </packages>
+  <samples>
+    <sample id="FirebaseStorageQuickstart">
+      <name>Firebase Storage Quickstart</name>
+      <summary>Firebase Storage Quickstart</summary>
+    </sample>
+  </samples>
+</component>

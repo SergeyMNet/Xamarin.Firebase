@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Alice.Models;
@@ -16,20 +15,97 @@ namespace Alice.ViewModels
     {
         #region Init
 
+        public readonly IFirebaseDatabase _firebaseDatabase;
         public readonly IFirebaseStorage _firebaseStorage;
         public readonly IChatService _chatService;
         public readonly IFirebaseAuth _firebaseAuth;
+
+
+        
+
+
+        string nodePath = "chats";
 
         public ChatVM(IChatService chatService)
         {
             _chatService = chatService;
             _firebaseAuth = DependencyService.Get<IFirebaseAuth>();
             _firebaseStorage = DependencyService.Get<IFirebaseStorage>();
-            FakeData();
+            _firebaseDatabase = DependencyService.Get<IFirebaseDatabase>();
+
+            //FakeData();
+
+            //GetDataFromJson();
+            //GetDataFromFirebase();
 
             _chatService.NewMessageReceived += ChatVM_NewMessageReceived;
 
-            GetUser();
+            GetUser().ContinueWith(x => GetDataFromFirebase());
+        }
+
+        private Task GetData()
+        {
+            ChatMessages.Clear();
+            foreach (var message in App.ChatMessages)
+            {
+                message.IsYourMessage = UserCurent.Name == message.UserName;
+                ChatMessages.Add(message);
+            }
+            return Task.FromResult(true);
+        }
+
+        private void GetDataFromFirebase()
+        {
+
+            Action<Dictionary<string, ChatMessage>> onValueEvent = (Dictionary<string, ChatMessage> messages) =>
+            {
+
+                System.Diagnostics.Debug.WriteLine("---> EVENT GetDataFromFirebase ");
+
+                Action onSetValueSuccess = () =>
+                {
+                    //if (onSuccess != null)
+                      //  onSuccess(true);
+                };
+
+                Action<string> onSetValueError = (string errorDesc) =>
+                {
+                    //if (onError != null)
+                      //  onError(errorDesc);
+                };
+
+                if (messages == null)
+                {
+                    //fbDatabaseService.SetValue(ROOMS_URL_PREFIX + chatroomDataToAdd.Id, chatroomDataToAdd, onSetValueSuccess, onSetValueError);
+                }
+                else
+                {
+                    if (messages.Count != 0 && ChatMessages.Count != messages.Count)
+                    {
+                        ChatMessages.Clear();
+                        foreach (var message in messages.OrderBy(m => m.Value))
+                        {
+                            message.Value.IsYourMessage = UserCurent.Name == message.Value.UserName;
+                            ChatMessages.Add(message.Value);
+                        }
+                    }
+                    //Room already exists just add users
+                    //foreach (string userId in chatroomDataToAdd.UserIds)
+                    //{
+                    //    if (!chatroomDataExisting.UserIds.Contains(userId))
+                    //    {
+                    //        chatroomDataExisting.UserIds.Add(userId);
+                    //    }
+                    //}
+
+                    //fbDatabaseService.SetValue(ROOMS_URL_PREFIX + chatroomDataToAdd.Id + USER_IDS_URL_SUFFIX, chatroomDataExisting.UserIds, onSetValueSuccess, onSetValueError);
+                }
+            };
+
+
+            //_firebaseDatabase.AddSingleValueEvent("chats", onValueEvent);
+
+            _firebaseDatabase.AddValueEvent("chats", onValueEvent);
         }
 
 
@@ -122,9 +198,9 @@ namespace Alice.ViewModels
             MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
             _chatService.SendMessage(message);
 
+            _firebaseDatabase.SetValue(nodePath + "/" + message.Id, message);
+
             NewMessageText = "";
-
-
             IsBusy = false;
         }
 
@@ -147,6 +223,8 @@ namespace Alice.ViewModels
 
             MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
             _chatService.SendMessage(message);
+            
+            _firebaseDatabase.SetValue(nodePath + "/" + message.Id, message);
 
             NewMessageText = "";
         }
@@ -162,8 +240,8 @@ namespace Alice.ViewModels
 
             if (UserCurent.Name != body.Message.UserName)
             {
-                ChatMessages.Add(body.Message);
-
+                //ChatMessages.Add(body.Message);
+                
                 MessagingCenter.Send<ChatVM>(this, "ScrollToEnd");
             }
         } 

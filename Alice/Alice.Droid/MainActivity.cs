@@ -1,20 +1,23 @@
 ﻿using System;
 using Android.App;
 using Android.Content.PM;
-using Android.Gms.Common.Apis;
 using Android.Gms.Tasks;
 using Android.Widget;
 using Android.OS;
+using Android.Runtime;
 using Firebase.Iid;
 using Firebase.Messaging;
-using Firebase.Auth;
-
-
+using Firebase.Database;
+using System.Collections.Generic;
+using Alice.Models;
+using GoogleGson;
+using Java.Util;
+using Newtonsoft.Json;
 
 namespace Alice.Droid
 {
     [Activity(Label = "Alice", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IOnCompleteListener 
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IOnCompleteListener
     {
         //private FirebaseAuth mAuth;
         //GoogleApiClient mGoogleApiClient;
@@ -36,11 +39,11 @@ namespace Alice.Droid
             if (!GetString(Resource.String.google_app_id).Equals("1:799235809725:android:d40b68b2638551f5"))
                 throw new SystemException("Invalid Json file");
             
-            // FirebaseMessagesInit
             GetTokenFcm();
+            
         }
-        
 
+        
         private void GetTokenFcm()
         {
             System.Threading.Tasks.Task.Run(() =>
@@ -91,7 +94,6 @@ namespace Alice.Droid
         {
             Toast.MakeText(this, message, ToastLength.Long).Show();
         }
-
     }
 }
 

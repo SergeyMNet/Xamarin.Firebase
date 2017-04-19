@@ -42,8 +42,15 @@
                                          VerticalOptions="FillAndExpand" 
                                          Padding="10">
                                 
+                                <Grid HorizontalOptions="FillAndExpand">
                                 <Label FontSize="10" TextColor="Gray"
+                                       HorizontalOptions="Start"
                                        Text="{Binding UserName}" />
+
+                                <Label FontSize="10" TextColor="Gray"
+                                       HorizontalOptions="End"
+                                       Text="{Binding DateMessageDate}" />
+                                </Grid>
 
                                 <Label IsVisible="{Binding Text, Converter={ StaticResource NullToBoolConverter}}"
                                     Text="{Binding Text}" />
