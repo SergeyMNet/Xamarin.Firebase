@@ -98,6 +98,7 @@
     <Compile Include="Renders\ImagePicker.cs" />
     <Compile Include="Renders\InstaCamController.cs" />
     <Compile Include="Services\FirebaseAuthIOS.cs" />
+    <Compile Include="Services\FirebaseDatabaseIOS.cs" />
     <Compile Include="Services\FirebaseStorageIOS.cs" />
     <None Include="app.config" />
     <None Include="Entitlements.plist" />
@@ -164,6 +165,10 @@
       <HintPath>..\..\packages\Xamarin.Firebase.iOS.Core.3.4.6\lib\Xamarin.iOS10\Firebase.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Firebase.Database, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Firebase.iOS.Database.3.1.1.2\lib\Xamarin.iOS10\Firebase.Database.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Firebase.InstanceID, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Firebase.iOS.InstanceID.1.0.8.1\lib\Xamarin.iOS10\Firebase.InstanceID.dll</HintPath>
       <Private>True</Private>
@@ -172,6 +177,7 @@
       <HintPath>..\..\packages\Xamarin.Firebase.iOS.Storage.1.0.5.2\lib\Xamarin.iOS10\Firebase.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -180,7 +186,12 @@
       <HintPath>..\..\packages\Unity.4.0.1\lib\portable-net45+wp80+win8+wpa81+MonoAndroid10+MonoTouch10\Microsoft.Practices.Unity.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -253,6 +264,7 @@
     <Error Condition="!Exists('..\..\packages\Xamarin.Firebase.iOS.Auth.3.1.0\build\Xamarin.Firebase.iOS.Auth.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Firebase.iOS.Auth.3.1.0\build\Xamarin.Firebase.iOS.Auth.targets'))" />
     <Error Condition="!Exists('..\..\packages\Xamarin.Forms.2.3.4.224\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.3.4.224\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets'))" />
     <Error Condition="!Exists('..\..\packages\Xamarin.Firebase.iOS.Storage.1.0.5.2\build\Xamarin.Firebase.iOS.Storage.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Firebase.iOS.Storage.1.0.5.2\build\Xamarin.Firebase.iOS.Storage.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Xamarin.Firebase.iOS.Database.3.1.1.2\build\Xamarin.Firebase.iOS.Database.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Firebase.iOS.Database.3.1.1.2\build\Xamarin.Firebase.iOS.Database.targets'))" />
   </Target>
   <Import Project="..\..\packages\Xamarin.Build.Download.0.4.3\build\Xamarin.Build.Download.targets" Condition="Exists('..\..\packages\Xamarin.Build.Download.0.4.3\build\Xamarin.Build.Download.targets')" />
   <Import Project="..\..\packages\Xamarin.Firebase.iOS.Core.3.4.6\build\Xamarin.Firebase.iOS.Core.targets" Condition="Exists('..\..\packages\Xamarin.Firebase.iOS.Core.3.4.6\build\Xamarin.Firebase.iOS.Core.targets')" />
@@ -262,4 +274,5 @@
   <Import Project="..\..\packages\Xamarin.Firebase.iOS.Auth.3.1.0\build\Xamarin.Firebase.iOS.Auth.targets" Condition="Exists('..\..\packages\Xamarin.Firebase.iOS.Auth.3.1.0\build\Xamarin.Firebase.iOS.Auth.targets')" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.4.224\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.224\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
   <Import Project="..\..\packages\Xamarin.Firebase.iOS.Storage.1.0.5.2\build\Xamarin.Firebase.iOS.Storage.targets" Condition="Exists('..\..\packages\Xamarin.Firebase.iOS.Storage.1.0.5.2\build\Xamarin.Firebase.iOS.Storage.targets')" />
+  <Import Project="..\..\packages\Xamarin.Firebase.iOS.Database.3.1.1.2\build\Xamarin.Firebase.iOS.Database.targets" Condition="Exists('..\..\packages\Xamarin.Firebase.iOS.Database.3.1.1.2\build\Xamarin.Firebase.iOS.Database.targets')" />
 </Project>
