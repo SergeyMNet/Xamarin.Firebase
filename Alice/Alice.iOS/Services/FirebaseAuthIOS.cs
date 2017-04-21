@@ -175,18 +175,18 @@ namespace Alice.iOS.Services
             var user = Auth.DefaultInstance.CurrentUser;
 
             var name = "";
-            var url = "";
+            var url = "user";
 
-            if (!string.IsNullOrEmpty(user.DisplayName))
+            if (!string.IsNullOrEmpty(user?.DisplayName))
             {
                 name = user.DisplayName;
             }
-            else if (!string.IsNullOrEmpty(user.Email))
+            else if (!string.IsNullOrEmpty(user?.Email))
             {
                 name = user.Email;
             }
 
-            if (user.PhotoUrl != null)
+            if (user?.PhotoUrl != null)
             {
                 url = user.PhotoUrl.ToString();
             }

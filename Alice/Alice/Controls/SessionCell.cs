@@ -26,6 +26,10 @@ namespace Alice.Controls
                     if (len > 80)
                         this.Height = len;
                 }
+                if (session.AttachImg.Length > 0)
+                {
+                    this.Height = 160;
+                }
             }
         }
 

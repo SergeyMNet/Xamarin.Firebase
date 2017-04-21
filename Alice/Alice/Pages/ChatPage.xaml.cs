@@ -18,11 +18,14 @@ namespace Alice.Pages
             
             Subscribe();
 
+#if !DEBUG
             if (Device.OS == TargetPlatform.iOS)
             {
                 EntryChat.Focused += EntryChat_Focused;
                 EntryChat.Unfocused += EntryChat_Completed;
             }
+#endif
+
         }
 
 

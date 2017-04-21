@@ -4,6 +4,7 @@ using System.Linq;
 using Alice.Models;
 using Alice.Services;
 using FFImageLoading.Forms.Touch;
+using Firebase.Auth;
 using Firebase.CloudMessaging;
 using Firebase.InstanceID;
 using Foundation;
@@ -30,9 +31,12 @@ namespace Alice.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+            
 
             CachedImageRenderer.Init();
+
+            
+
 
             // Monitor token generation
             InstanceId.Notifications.ObserveTokenRefresh(TokenRefreshNotification);
@@ -64,6 +68,8 @@ namespace Alice.iOS
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
             Firebase.Analytics.App.Configure();
 
+            
+
             try
             {
                 var token = InstanceId.SharedInstance.Token;
@@ -75,6 +81,8 @@ namespace Alice.iOS
                 System.Diagnostics.Debug.WriteLine(ex);
             }
 
+
+            LoadApplication(new App());
             return base.FinishedLaunching(app, options);
         }
         
